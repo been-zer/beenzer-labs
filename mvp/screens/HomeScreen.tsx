@@ -16,15 +16,12 @@ const HomeScreen = () => {
   const [allNFTs, setAllNFTs] = useState<any>([]);
   const [userCity, setUserCity] = useState<string>("");
 
-
   useEffect(() => {
     SOCKET.emit("getAllNFTs", "please");
     SOCKET.on("allNFTs", (allNFTs: any) => {
       setAllNFTs(allNFTs);
     });
   }, [])
-
-
 
   useEffect(() => {
     allNFTs.forEach((nft: any) => {
@@ -65,10 +62,6 @@ const HomeScreen = () => {
   const handlePress = (e: any) => {
     console.log("longpress :", e);
   };
-
-
-
-
 
   return (
     <SafeAreaView
