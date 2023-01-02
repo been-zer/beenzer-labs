@@ -10,6 +10,7 @@ import { atom, useAtom } from "jotai";
 import { atomDappKeyPair, atomSharedSecret, atomSession, atomPhantomWalletPublicKey } from "../global";
 import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
 import { Vibration } from 'react-native';
+import { SOCKET, socketConnection } from "../services/socket";
 
 const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
 
@@ -45,6 +46,7 @@ const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
          setSession(connectData.session);
          setPhantomWalletPublicKey(new PublicKey(connectData.public_key));
          console.log("connection successfull")
+         socketConnection(connectData.public_key);
          navigation.navigate("Credentials");
          Vibration.vibrate(1);
       }

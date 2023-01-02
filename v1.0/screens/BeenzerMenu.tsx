@@ -8,7 +8,7 @@ import BeenzerAudio from "./BeenzerAudio";
 const BeenzerMenu = () => {
 
    return (
-      <SafeAreaView className="bg-zinc-900 h-screen">
+      <SafeAreaView className='h-full bg-zinc-900 flex-1 ' style={StyleSheet.absoluteFillObject}>
          <ScrollView >
             <View className="flex-1 justify-evenly items-center my-20">
                <BeenzerAudio />
@@ -17,7 +17,7 @@ const BeenzerMenu = () => {
             </View>
          </ScrollView>
          <Footer />
-      </SafeAreaView>
+      </SafeAreaView >
    )
 };
 

@@ -3,10 +3,15 @@ import { useState, useRef } from 'react'
 import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
 import OpenURLButton from '../components/OpenURLButton'
 import { fadeIn } from '../services/Functions';
-
+import { firstLogin } from '../services/socket';
+import { SOCKET } from '../services/socket'
+import { useAtom } from 'jotai'
+import { atomDarkModeOn, atomDarkMode, atomLightMode } from '../services/darkmode'
 
 const Credentials = () => {
-
+   const [darkModeOn, setDarkModeOn] = useAtom(atomDarkModeOn);
+   const [darkMode, setDarkMode] = useAtom(atomDarkMode);
+   const [lightkMode, setLightMode] = useAtom(atomLightMode);
    const navigation = useNavigation<NavigationProp<ParamListBase>>()
    const [buttonActive, setButtonActive] = useState(true)
    const [username, setUsername] = useState('')
@@ -14,8 +19,6 @@ const Credentials = () => {
    const regex = new RegExp(/(\s*([\0\b\'\"\n\r\t\%\_\\]*\s*(((select\s*.+\s*from\s*.+)|(insert\s*.+\s*into\s*.+)|(update\s*.+\s*set\s*.+)|(delete\s*.+\s*from\s*.+)|(drop\s*.+)|(truncate\s*.+)|(alter\s*.+)|(exec\s*.+)|(\s*(all|any|not|and|between|in|like|or|some|contains|containsall|containskey)\s*.+[\=\>\<=\!\~]+.+)|(let\s+.+[\=]\s*.*)|(begin\s*.*\s*end)|(\s*[\/\*]+\s*.*\s*[\*\/]+)|(\s*(\-\-)\s*.*\s+)|(\s*(contains|containsall|containskey)\s+.*)))(\s*[\;]\s*)*)+)/i)
    const phantomURL = 'https://phantom.app/ul/'
    const fadeAnim = useRef(new Animated.Value(0)).current;
-
-
 
    const handleUsername = (text: string) => {
       if (text.includes(' ')) {
@@ -42,15 +45,17 @@ const Credentials = () => {
       if (errorText) {
          return
       } else {
-         navigation.navigate('Home')
+         SOCKET.emit('userName', username)
+         SOCKET.on('userNameAv', (data: any) => {
+            console.log(data)
+         })
       }
    }
 
    fadeIn(fadeAnim)
 
-
    return (
-      <SafeAreaView className="h-full bg-zinc-900 flex-1 items-center"  >
+      <SafeAreaView className={`h-full bg-${darkModeOn ? darkMode : lightkMode} flex-1 items-center`}  >
          <Animated.View style={{ opacity: fadeAnim }}>
             <View>
                <Text className="text-center my-5 text-green-600 font-bold text-4xl">Welcome </Text>
@@ -58,12 +63,11 @@ const Credentials = () => {
             </View>
          </Animated.View>
          <TextInput
-            className="border-2  border-green-600 text-white rounded-lg w-80 h-18 my-4 p-3"
+            className={`border-2  border-green-600 text-${darkModeOn ? lightkMode : darkMode} rounded-lg w-80 h-18 my-4 p-3`}
             placeholder="Username"
-            placeholderTextColor="white"
+            placeholderTextColor="gray"
             onChangeText={handleUsername}
-            value={username}
-            keyboardAppearance='dark'
+            keyboardAppearance={darkModeOn ? 'dark' : 'light'}
             returnKeyType='previous'
          />
          {errorText &&
@@ -87,7 +91,7 @@ const Credentials = () => {
             </Text>
          </TouchableOpacity>
          <View>
-            <Text className="text-white text-center my-4">
+            <Text className={`text-${darkModeOn ? lightkMode : darkMode} text-center my-4`}>
                Or
             </Text>
          </View>
@@ -99,6 +103,3 @@ const Credentials = () => {
 }
 
 export default Credentials;
-
-
-

@@ -1,8 +1,9 @@
-import { atom, useAtom } from 'jotai'
+import { atom } from 'jotai'
 import { Dimensions } from 'react-native';
 
 
-export const atomDarkmode = atom('bg-zinc-900');
+export const atomDarkModeOn = atom(true);
+export const atomDarkMode = atom('zinc-900');
 export const atomLightMode = atom('white');
 
 

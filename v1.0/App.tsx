@@ -1,23 +1,36 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View } from 'react-native';
+import { SafeAreaView, StatusBar, View } from 'react-native';
 import Login from './screens/Login';
 import Home from './screens/Home';
 import Credentials from './screens/Credentials';
 import BeenzerMenu from './screens/BeenzerMenu';
-
+import { atomDarkModeOn, atomDarkMode, atomLightMode } from './services/darkmode';
+import { useAtom } from 'jotai';
 const Stack = createNativeStackNavigator();
 
 const headerHide = {
   headerShown: false,
+  // presentation: 'modal',
+  // animationTypeForReplace: 'push',
+  // animation: 'slide_from_right',
 };
 
 export default function App() {
+
+  const [darkModeOn, setDarkModeOn] = useAtom(atomDarkModeOn);
+  const [darkMode, setDarkMode] = useAtom(atomDarkMode);
+  const [lightkMode, setLightMode] = useAtom(atomLightMode);
+
   return (
-    <View className={`flex-1 h-screen pt-8 bg-zinc-900`}>
+    <SafeAreaView className={`${darkModeOn ? `bg-${darkMode}` : `bg-${lightkMode}`} flex-1`}>
+      <StatusBar barStyle={darkModeOn ? 'light-content' : 'dark-content'} />
       < NavigationContainer >
-        <Stack.Navigator>
-          <Stack.Screen name="Login" component={Login} options={headerHide} />
+        <Stack.Navigator
+        >
+          <Stack.Screen name="Login" component={Login} options={{
+            headerShown: false,
+          }} />
           <Stack.Screen
             name="Credentials"
             component={Credentials}
@@ -25,12 +38,14 @@ export default function App() {
               headerShown: true,
               headerTitle: 'Sign Up',
               headerTransparent: true,
-              headerTintColor: 'white',
+              headerTintColor: `${darkModeOn ? `bg-${darkMode}` : `bg-${lightkMode}`}`,
               headerBackTitle: 'Back',
               headerBackTitleVisible: false,
             }}
           />
-          <Stack.Screen name="Home" component={Home} options={headerHide} />
+          <Stack.Screen name="Home" component={Home} options={{
+            headerShown: false,
+          }} />
           <Stack.Screen name="BeenzerMenu" component={BeenzerMenu} options={{
             headerShown: true,
             headerTitle: 'New Beenzer',
@@ -40,6 +55,6 @@ export default function App() {
           }} />
         </Stack.Navigator>
       </NavigationContainer >
-    </View>
+    </SafeAreaView>
   );
 }
