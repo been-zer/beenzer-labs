@@ -5,6 +5,7 @@ import { Dimensions } from 'react-native';
 export const atomDarkModeOn = atom(true);
 export const atomDarkMode = atom('zinc-900');
 export const atomLightMode = atom('white');
+export const atomPinkMode = atom('pink');
 
 
 const windowWidth = Dimensions.get('window').width;

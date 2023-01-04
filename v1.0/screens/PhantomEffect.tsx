@@ -2,15 +2,16 @@ import { useEffect } from 'react'
 import "react-native-get-random-values";
 import "react-native-url-polyfill/auto";
 import nacl from "tweetnacl";
-import { decryptPayload } from "../services/phantomFunction";
+import { decryptPayload } from "../services/phantom/functions";
 import * as Linking from "expo-linking";
 import { PublicKey } from "@solana/web3.js";
 import bs58 from "bs58";
 import { atom, useAtom } from "jotai";
-import { atomDappKeyPair, atomSharedSecret, atomSession, atomPhantomWalletPublicKey } from "../global";
+import { atomDappKeyPair, atomSharedSecret, atomSession, atomPhantomWalletPublicKey, atomUserNFTs, atomProfile, atomSOCKET } from "../services/global";
 import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
 import { Vibration } from 'react-native';
-import { SOCKET, socketConnection } from "../services/socket";
+import { firstLogin } from "../services/socket/function";
+import { socketConnection } from "../services/socket/connexion";
 
 const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
 
@@ -19,6 +20,7 @@ const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
    const [session, setSession] = useAtom(atomSession)
    const [phantomWalletPublicKey, setPhantomWalletPublicKey] = useAtom(atomPhantomWalletPublicKey)
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
+   const [SOCKET] = useAtom(atomSOCKET);
 
    // handle inbounds links
    useEffect(() => {
@@ -45,14 +47,20 @@ const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
          setSharedSecret(sharedSecretDapp);
          setSession(connectData.session);
          setPhantomWalletPublicKey(new PublicKey(connectData.public_key));
-         console.log("connection successfull")
-         socketConnection(connectData.public_key);
-         navigation.navigate("Credentials");
-         Vibration.vibrate(1);
+         socketConnection(connectData.public_key, SOCKET);
+         const getNewUserStatus = async () => {
+            const newUser = await firstLogin(SOCKET);
+            if (newUser) {
+               navigation.navigate("Credentials");
+            } else {
+               navigation.navigate("Home");
+            }
+         }
+         getNewUserStatus();
       }
    }, [deepLink]);
 
-   return null
-}
+   return null;
+};
 
-export default PhantomEffect
+export default PhantomEffect;

@@ -7,7 +7,7 @@ import bs58 from "bs58";
 import {
    clusterApiUrl,
 } from "@solana/web3.js";
-import { buildUrl } from "./phantomFunction";
+import { buildUrl } from "./functions";
 
 const NETWORK = clusterApiUrl("mainnet-beta");
 

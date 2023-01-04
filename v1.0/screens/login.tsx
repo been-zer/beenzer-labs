@@ -1,13 +1,13 @@
 import { Image, TouchableOpacity, View, SafeAreaView, Text, Vibration, Animated } from "react-native";
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { connect } from "../services/phantomLogin";
+import { connect } from "../services/phantom/login"
 import * as Linking from "expo-linking";
 import { useAtom } from "jotai";
-import { atomDeepLink, atomDappKeyPair } from "../global";
+import { atomDeepLink, atomDappKeyPair } from "../services/global";
 import PhantomEffect from "../screens/PhantomEffect";
 import { useNavigation } from "@react-navigation/native";
-import { atomDarkModeOn, atomDarkMode, atomLightMode, useSwipe } from "../services/darkmode";
-import { fadeIn } from "../services/Functions";
+import { atomDarkModeOn, atomDarkMode, atomLightMode, atomPinkMode, useSwipe } from "../services/darkmode";
+import { fadeIn } from "../services/global/functions";
 
 const Login = () => {
 
@@ -17,12 +17,13 @@ const Login = () => {
    const [darkModeOn, setDarkModeOn] = useAtom(atomDarkModeOn);
    const [darkMode, setDarkMode] = useAtom(atomDarkMode);
    const [lightMode, setLightMode] = useAtom(atomLightMode);
+   const [pinkMode, setPinkMode] = useAtom(atomPinkMode);
    const fadeAnim = useRef(new Animated.Value(0)).current;
    const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6)
 
+
    function onSwipeLeft() {
       setDarkModeOn(!darkModeOn)
-
       Vibration.vibrate();
    }
    function onSwipeRight() {
@@ -56,18 +57,22 @@ const Login = () => {
 
    return (
       <>
-         <View onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} className={`${darkModeOn ? `bg-${darkMode}` : `bg-${lightMode}`} flex-1`}
-         >
-            <View className="bottom-24 left-2">
+         <View onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} className={`${darkModeOn ? `bg-${darkMode}` : `bg-${lightMode}`} justify-evenly items-center flex-1`}>
+            <View className="">
                <Image
-                  className="absolute shadow-md mt-32 h-96 w-96 shadow-green-500 "
+                  style={{ tintColor: darkModeOn ? `${lightMode}` : 'pink' }}
+                  className="h-52 w-52 shadow-green-500 "
                   source={require("../assets/New_Artwork_e.png")}
                />
             </View>
-            <Animated.View style={{ opacity: fadeAnim }}>
+            <Animated.View style={{
+               opacity: fadeAnim,
+               display: 'flex',
+               justifyContent: 'center',
+               alignItems: 'center',
+            }}>
                <Text
-                  style={{ fontFamily: "Avenir-Black" }}
-                  className="text-6xl uppercase top-72 text-green-500 font-extrabold text-center p-6"
+                  className={`text-4xl font-extrabold ${darkModeOn ? `text-white` : `text-${darkMode}`}`}
                >
                   Beenzer
                </Text>
@@ -75,14 +80,15 @@ const Login = () => {
             <View>
                <Animated.View style={{ opacity: fadeAnim }}>
                   <TouchableOpacity
-                     className={`border border-${darkModeOn ? lightMode : darkMode} border-z-99 top-16 mx-16 mt-80 shadow-xl p-4 rounded-2xl`}
+                     className={`border ${darkModeOn ? `border-${lightMode}` : `border-${darkMode}`} shadow-xl rounded-2xl flex-row justify-center items-center p-2`}
                      onPress={handleLogin}>
                      <Image
-                        className="absolute w-8 h-8 left-4 top-2"
+                        className="h-10 w-10"
+                        style={{ tintColor: darkModeOn ? `${lightMode}` : "pink" }}
                         resizeMode="contain"
                         source={require("../assets/phantom.png")}
                      />
-                     <Text className={`font-semibold text-center ml-8 text-${darkModeOn ? lightMode : darkMode}`}>
+                     <Text className={`font-semibold text-center text-${darkModeOn ? lightMode : darkMode}`}>
                         {" "}
                         Login with Phantom{" "}
                      </Text>
@@ -91,7 +97,7 @@ const Login = () => {
             </View>
             <Text
                style={{ fontFamily: "Avenir-Black" }}
-               className="mt-12 mx-14 top-16 text-green-500 font-medium text-center"
+               className={`${darkModeOn ? `text-${lightMode}` : `${darkMode}`} font-medium text-center`}
             >
                Welcome to BeenZer, the first fully decentralized social app where
                you OWN your content. Drop your stories in the map forever minting

@@ -20,10 +20,10 @@ export default function App() {
 
   const [darkModeOn, setDarkModeOn] = useAtom(atomDarkModeOn);
   const [darkMode, setDarkMode] = useAtom(atomDarkMode);
-  const [lightkMode, setLightMode] = useAtom(atomLightMode);
+  const [lightMode, setLightMode] = useAtom(atomLightMode);
 
   return (
-    <SafeAreaView className={`${darkModeOn ? `bg-${darkMode}` : `bg-${lightkMode}`} flex-1`}>
+    <SafeAreaView className={`${darkModeOn ? `bg-${darkMode}` : `bg-${lightMode}`} flex-1`}>
       <StatusBar barStyle={darkModeOn ? 'light-content' : 'dark-content'} />
       < NavigationContainer >
         <Stack.Navigator
@@ -38,7 +38,7 @@ export default function App() {
               headerShown: true,
               headerTitle: 'Sign Up',
               headerTransparent: true,
-              headerTintColor: `${darkModeOn ? `bg-${darkMode}` : `bg-${lightkMode}`}`,
+              headerTintColor: `${darkModeOn ? `${lightMode}` : `${darkMode}`}`,
               headerBackTitle: 'Back',
               headerBackTitleVisible: false,
             }}

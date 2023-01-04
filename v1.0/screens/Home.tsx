@@ -1,17 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity } from "react-native"
 import Footer from './Footer';
-import MapView, { MapViewProps } from 'react-native-maps';
-import { mapStyle } from '../global';
-import { getUserLocation } from '../services/Functions';
+import Map from './Map';
 import { ActivityIndicator } from 'react-native-paper';
 import { ArrowPathIcon } from 'react-native-heroicons/outline'
-import { ILocation } from '../Types';
+import { atomUserNFTs, atomProfile } from '../services/global';
+import { useAtom } from 'jotai';
+import { socketUserNFTs, socketUserInfo } from "../services/socket/function";
+import { atomSOCKET, atomUserLocation, atomRefreshLoc } from '../services/global/index';
+import Feed from './Feed';
+import { getUserLocation } from '../services/global/functions';
+import MapView from 'react-native-maps';
+
 
 const Home = () => {
-   const [userLocation, setUserLocation] = useState<ILocation>();
-   const [refreshLoc, setRefreshLoc] = useState<boolean>(false);
+   const [profile, setProfile] = useAtom(atomProfile);
+   const [userNFTs, setUserNFTs] = useAtom(atomUserNFTs);
+   const [SOCKET] = useAtom(atomSOCKET);
+   const [showTab, setShowTab] = useState('Map');
+   const [userLocation, setUserLocation] = useAtom(atomUserLocation);
+   const [refreshLoc, setRefreshLoc] = useAtom(atomRefreshLoc);
    const mapRef = useRef<MapView>(null);
+
+   useEffect(() => {
+      fetchData();
+      getInfoUser();
+      getInfoNft();
+   }, []);
 
    const fetchData = async () => {
       const location: any = await getUserLocation();
@@ -27,9 +42,27 @@ const Home = () => {
       };
    };
 
+   const getInfoUser = async () => {
+      try {
+         const receivedInfos = await socketUserInfo(SOCKET);
+         setProfile(receivedInfos);
+      } catch (e) {
+         console.error(e);
+      }
+   }
+   const getInfoNft = async () => {
+      try {
+         const profileNFTs = await socketUserNFTs(SOCKET);
+         setUserNFTs(profileNFTs);
+      } catch (e) {
+         console.error(e);
+      }
+   }
+
    useEffect(() => {
-      fetchData();
-   }, []);
+      console.log('profile', profile)
+      console.log('NFT', userNFTs)
+   }, [profile, userNFTs])
 
    return (
       <SafeAreaView className='h-full bg-zinc-900 flex-1 ' style={StyleSheet.absoluteFillObject}>
@@ -43,45 +76,26 @@ const Home = () => {
                }
             </TouchableOpacity>
          </View>
-         {/* map */}
-         {userLocation ?
-            <View className='flex-1'>
-               <MapView
-                  ref={mapRef}
-                  customMapStyle={mapStyle}
-                  showsUserLocation={true}
-                  provider='google'
-                  initialRegion={{
-                     latitude: userLocation.coords.latitude,
-                     longitude: userLocation.coords.longitude,
-                     latitudeDelta: 0.05,
-                     longitudeDelta: 0.05,
-                  }}
-                  style={styles.map}
-               />
-            </View> : <View className='flex-1'>
-               <MapView style={styles.map} customMapStyle={mapStyle} provider='google' />
-            </View>}
-         {/* Footer */}
+         {/* {tab bar} */}
+         <View className='flex-row justify-around'>
+            <TouchableOpacity className='' onPress={() => setShowTab('Map')}>
+               <Text className='text-gray-100'>Map</Text>
+            </TouchableOpacity>
+            <TouchableOpacity className='' onPress={() => setShowTab('Feeds')}>
+               <Text className='text-gray-100'>Feeds</Text>
+            </TouchableOpacity>
+         </View>
+         {showTab === 'Feeds' &&
+            <Feed />
+         }
+         {
+            showTab === 'Map' &&
+            <Map mapRef={mapRef} />
+         }
          <Footer />
       </SafeAreaView >
    )
 }
 
-const styles = StyleSheet.create({
-   map: {
-      ...StyleSheet.absoluteFillObject,
-      height: '120%',
-   },
-   picture: {
-      width: 100,
-      height: 100,
-      resizeMode: "cover"
-   },
-   callout: {
-      backgroundColor: 'black',
-      color: 'white'
-   }
-});
 
 export default Home

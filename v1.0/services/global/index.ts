@@ -1,7 +1,13 @@
-import { atom } from 'jotai'
 import { PublicKey } from '@solana/web3.js'
 import nacl from 'tweetnacl'
+import { io, Socket } from "socket.io-client";
+import { atom } from "jotai";
+import { INFT, IProfile, ILocation } from '../../Types';
 
+export const SOCKET = io('https://f116-212-31-49-235.eu.ngrok.io', { transports: ["websocket"] });
+SOCKET.on('serverConnection', (message: string) => { console.log(message) });
+
+export const atomSOCKET = atom<Socket>(SOCKET);
 
 export const atomDeepLink = atom("");
 export const atomDappKeyPair = atom(nacl.box.keyPair());
@@ -9,6 +15,10 @@ export const atomSharedSecret = atom<Uint8Array | string>("");
 export const atomSession = atom("");
 export const atomPhantomWalletPublicKey = atom<PublicKey | string>("");
 export const atomActiveScreen = atom("Home");
+export const atomUserNFTs = atom<INFT[]>([]);
+export const atomProfile = atom<IProfile>({} as IProfile);
+export const atomUserLocation = atom<ILocation>({} as ILocation);
+export const atomRefreshLoc = atom<boolean>(false);
 
 export const mapStyle = [
    {
