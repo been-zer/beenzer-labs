@@ -13,6 +13,7 @@ export const atomUserNFTs = atom<INFT[]>([]);
 export const atomProfile = atom<IProfile>({} as IProfile);
 export const atomUserLocation = atom<ILocation>({} as ILocation);
 export const atomRefreshLoc = atom<boolean>(false);
+export const atomPic = atom<string>("");
 
 export const mapStyle = [
    {

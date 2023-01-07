@@ -5,6 +5,7 @@ import Login from './screens/Login';
 import Home from './screens/Home';
 import Credentials from './screens/Credentials';
 import BeenzerMenu from './screens/BeenzerMenu';
+import PostBeenzer from './screens/PostBeenzer';
 import { atomDarkModeOn, atomDarkMode, atomLightMode } from './services/globals/darkmode';
 import { useAtom } from 'jotai';
 import Picture from './screens/Picture';
@@ -47,23 +48,23 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} options={{
             headerShown: false,
           }} />
-          <Stack.Screen name="Picture" component={Picture} options={{
+          <Stack.Screen name="BeenzerMenu" component={BeenzerMenu} options={{
             headerShown: true,
             headerTitle: 'New Beenzer',
             headerTransparent: true,
             headerTintColor: 'white',
             headerBackVisible: false,
           }} />
-          <Stack.Screen name="PermissionsPage" component={PermissionsPage} />
-          <Stack.Screen name="CameraPage" component={CameraPage} />
-          <Stack.Screen
-            name="MediaPage"
-            component={MediaPage}
-            options={{
-              animation: 'none',
-              presentation: 'transparentModal',
-            }}
-          />
+          <Stack.Screen name="Picture" component={Picture} options={{
+            headerTitle: '',
+            headerTransparent: true,
+            headerTintColor: 'white',
+            headerBackTitle: '',
+            headerBackVisible: true,
+          }} />
+          <Stack.Screen name="PostBeenzer" component={PostBeenzer} options={{
+            headerShown: false,
+          }} />
         </Stack.Navigator>
       </NavigationContainer >
     </SafeAreaView>

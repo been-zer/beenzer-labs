@@ -9,7 +9,7 @@ const BeenzerMedia = ({ title, menu }: { title: string, menu: string }) => {
       if (beenzer === 'audio') {
          Alert.alert('Audio Beenzer', 'Coming soon')
       } else if (beenzer === 'photo') {
-         navigation.navigate('zzPicture')
+         navigation.navigate('Picture')
       } else if (beenzer === 'video') {
          Alert.alert('Video Beenzer', 'Coming soon')
       }
