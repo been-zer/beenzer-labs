@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { useEffect, useState } from 'react'
 import { MapIcon, UserIcon, UsersIcon, ChatBubbleOvalLeftEllipsisIcon, PlusCircleIcon } from 'react-native-heroicons/outline'
 import { useNavigation, NavigationProp, ParamListBase } from '@react-navigation/native';
-import { atomActiveScreen } from '../services/global'
+import { atomActiveScreen } from '../services/globals'
 import { useAtom } from 'jotai'
 
 export default function Footer() {

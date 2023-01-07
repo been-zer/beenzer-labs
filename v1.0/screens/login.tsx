@@ -3,11 +3,12 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { connect } from "../services/phantom/login"
 import * as Linking from "expo-linking";
 import { useAtom } from "jotai";
-import { atomDeepLink, atomDappKeyPair } from "../services/global";
+import { atomDeepLink, atomDappKeyPair } from "../services/globals";
 import PhantomEffect from "../screens/PhantomEffect";
 import { useNavigation } from "@react-navigation/native";
-import { atomDarkModeOn, atomDarkMode, atomLightMode, atomPinkMode, useSwipe } from "../services/darkmode";
-import { fadeIn } from "../services/global/functions";
+import { atomDarkModeOn, atomDarkMode, atomLightMode, atomPinkMode, useSwipe } from "../services/globals/darkmode";
+import { fadeIn } from "../services/globals/functions";
+import ColorMode from "../components/ColorMode";
 
 const Login = () => {
 
@@ -24,16 +25,13 @@ const Login = () => {
 
    function onSwipeLeft() {
       setDarkModeOn(!darkModeOn)
-      Vibration.vibrate();
    }
    function onSwipeRight() {
       setDarkModeOn(!darkModeOn)
-      Vibration.vibrate();
    }
 
    const handleLogin = () => {
       connect(dappKeyPair);
-      Vibration.vibrate();
    };
 
    useEffect(() => {
@@ -57,8 +55,13 @@ const Login = () => {
 
    return (
       <>
-         <View onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} className={`${darkModeOn ? `bg-${darkMode}` : `bg-${lightMode}`} justify-evenly items-center flex-1`}>
-            <View className="">
+         <View onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} className={`${darkModeOn ? `bg-${darkMode}` : `bg-white`} flex-auto justify-evenly`}>
+            <View className=" flex-row ">
+               <View className='flex-1 justify-center items-center'>
+                  <ColorMode />
+               </View>
+            </View>
+            <View className="self-center">
                <Image
                   style={{ tintColor: darkModeOn ? `${lightMode}` : 'pink' }}
                   className="h-52 w-52 shadow-green-500 "
@@ -77,10 +80,10 @@ const Login = () => {
                   Beenzer
                </Text>
             </Animated.View>
-            <View>
+            <View className="items-center">
                <Animated.View style={{ opacity: fadeAnim }}>
                   <TouchableOpacity
-                     className={`border ${darkModeOn ? `border-${lightMode}` : `border-${darkMode}`} shadow-xl rounded-2xl flex-row justify-center items-center p-2`}
+                     className={`border ${darkModeOn ? 'border-white' : `border-${darkMode}`} w-52 shadow-xl rounded-2xl flex-row justify-center items-center p-2`}
                      onPress={handleLogin}>
                      <Image
                         className="h-10 w-10"
@@ -89,8 +92,7 @@ const Login = () => {
                         source={require("../assets/phantom.png")}
                      />
                      <Text className={`font-semibold text-center text-${darkModeOn ? lightMode : darkMode}`}>
-                        {" "}
-                        Login with Phantom{" "}
+                        {'   '}Login with Phantom
                      </Text>
                   </TouchableOpacity>
                </Animated.View>

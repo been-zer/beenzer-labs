@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet } from 'react-native'
 import MapView from 'react-native-maps';
-import { mapStyle } from '../services/global/index';
+import { mapStyle } from '../services/globals/index';
 import { useAtom } from 'jotai';
-import { atomUserLocation } from '../services/global';
+import { atomUserLocation } from '../services/globals';
 
 
 const Map = ({ mapRef }: any) => {

@@ -1,13 +1,7 @@
 import { PublicKey } from '@solana/web3.js'
 import nacl from 'tweetnacl'
-import { io, Socket } from "socket.io-client";
 import { atom } from "jotai";
 import { INFT, IProfile, ILocation } from '../../Types';
-
-export const SOCKET = io('https://f116-212-31-49-235.eu.ngrok.io', { transports: ["websocket"] });
-SOCKET.on('serverConnection', (message: string) => { console.log(message) });
-
-export const atomSOCKET = atom<Socket>(SOCKET);
 
 export const atomDeepLink = atom("");
 export const atomDappKeyPair = atom(nacl.box.keyPair());

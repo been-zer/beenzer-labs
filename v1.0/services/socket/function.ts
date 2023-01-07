@@ -1,3 +1,4 @@
+import { PublicKey } from '@solana/web3.js'
 import { Socket } from "socket.io-client";
 import { INFT, IProfile } from "../../Types";
 
@@ -34,17 +35,20 @@ export const firstLogin = (Socket: Socket) => {
    });
 };
 
-export const checkUsernameAvailability = (username: String, creatingNow: boolean, Socket: Socket) => {
+export const checkUsernameAvailability = (username: String, Socket: Socket) => {
    return new Promise<boolean>((resolve) => {
-      Socket.emit('userName', username, true, creatingNow)
+      console.log(username)
+      Socket.emit('userName', username)
       Socket.on('userNameAv', (data: any) => {
+         console.log('userNameAv', data)
          resolve(data)
       })
    })
 }
 
-export const handleNewUserCreated = (Socket: Socket) => {
+export const handleNewUserCreated = (Socket: Socket, pubkey: PublicKey | string, username: string, appuser: boolean) => {
    return new Promise((resolve) => {
+      Socket.emit('newUser', pubkey, username, appuser)
       Socket.on('newUserCreated', async (resp: boolean) => {
          resolve(resp)
       })

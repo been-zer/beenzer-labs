@@ -2,12 +2,14 @@ import { View, Text, TextInput, SafeAreaView, TouchableOpacity, Alert, Animated 
 import { useState, useRef } from 'react'
 import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
 import OpenURLButton from '../components/OpenURLButton'
-import { fadeIn } from '../services/global/functions';
+import { fadeIn } from '../services/globals/functions';
 import { useAtom } from 'jotai'
-import { atomDarkModeOn, atomDarkMode, atomLightMode } from '../services/darkmode'
+import { atomDarkModeOn, atomDarkMode, atomLightMode } from '../services/globals/darkmode'
+import { atomPhantomWalletPublicKey } from '../services/globals/index'
+import { PublicKey } from '@solana/web3.js'
 import { checkUsernameAvailability, handleNewUserCreated } from '../services/socket/function'
 import { CheckCircleIcon, XCircleIcon } from 'react-native-heroicons/outline'
-import { atomSOCKET } from '../services/global/index';
+import { atomSOCKET } from '../services/socket';
 
 
 const Credentials = () => {
@@ -23,6 +25,7 @@ const Credentials = () => {
    const fadeAnim = useRef(new Animated.Value(0)).current;
    const [usernameAvailable, setUsernameAvailable] = useState(false)
    const [SOCKET] = useAtom(atomSOCKET);
+   const [phantomWalletPublicKey, setPhantomWalletPublicKey] = useAtom(atomPhantomWalletPublicKey);
 
    const handleUsername = (text: string) => {
       if (text.includes(' ')) {
@@ -41,7 +44,7 @@ const Credentials = () => {
          setErrorText("");
          setUsername(text);
          const check = async () => {
-            const availability: boolean = await checkUsernameAvailability(text, false, SOCKET)
+            const availability: boolean = await checkUsernameAvailability(text, SOCKET)
             setUsernameAvailable(availability);
             if (availability) {
                setButtonInactive(false);
@@ -55,9 +58,9 @@ const Credentials = () => {
    }
 
    const handleLogin = async (username: string) => {
-      const usernameAvailable = await checkUsernameAvailability(username, true, SOCKET);
+      const usernameAvailable = await checkUsernameAvailability(username, SOCKET);
       if (usernameAvailable) {
-         const userCreated = await handleNewUserCreated(SOCKET);
+         const userCreated = await handleNewUserCreated(SOCKET, phantomWalletPublicKey, username, true);
          if (userCreated) {
             navigation.navigate("Home");
          }

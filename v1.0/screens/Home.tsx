@@ -4,16 +4,20 @@ import Footer from './Footer';
 import Map from './Map';
 import { ActivityIndicator } from 'react-native-paper';
 import { ArrowPathIcon } from 'react-native-heroicons/outline'
-import { atomUserNFTs, atomProfile } from '../services/global';
+import { atomUserNFTs, atomProfile } from '../services/globals';
 import { useAtom } from 'jotai';
 import { socketUserNFTs, socketUserInfo } from "../services/socket/function";
-import { atomSOCKET, atomUserLocation, atomRefreshLoc } from '../services/global/index';
+import { atomUserLocation, atomRefreshLoc } from '../services/globals/index';
+import { atomSOCKET } from '../services/socket';
 import Feed from './Feed';
-import { getUserLocation } from '../services/global/functions';
+import { getUserLocation } from '../services/globals/functions';
 import MapView from 'react-native-maps';
+import ColorMode from '../components/ColorMode';
+import { atomPhantomWalletPublicKey } from '../services/globals';
 
 
 const Home = () => {
+   const [phantomWalletPublicKey] = useAtom(atomPhantomWalletPublicKey);
    const [profile, setProfile] = useAtom(atomProfile);
    const [userNFTs, setUserNFTs] = useAtom(atomUserNFTs);
    const [SOCKET] = useAtom(atomSOCKET);
@@ -66,16 +70,19 @@ const Home = () => {
 
    return (
       <SafeAreaView className='h-full bg-zinc-900 flex-1 ' style={StyleSheet.absoluteFillObject}>
-         <View className='justify-center'>
-            {/* {title} */}
-            <Text className='text-green-600 bottom-1 text-3xl font-bold text-center'>Beenzer</Text>
-            <TouchableOpacity className='justify-center items-center' onPress={() => (fetchData(), setRefreshLoc(false))}>
-               {userLocation && refreshLoc ? <View className='flex-row items-center justify-center mb-2'><Text className='text-gray-100 '>{userLocation.city}&nbsp;</Text>
-                  <ArrowPathIcon size={10} color='white' /></View > :
-                  <ActivityIndicator className=' bottom-1' color="white" />
-               }
-            </TouchableOpacity>
+         {/* {title} */}
+         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <Text style={{ alignSelf: 'flex-start' }} className='text-green-600 text-3xl font-bold'>Beenzer</Text>
+            <View style={{ alignSelf: 'flex-end' }} >
+               <ColorMode />
+            </View>
          </View>
+         <TouchableOpacity className='justify-center items-center' onPress={() => (fetchData(), setRefreshLoc(false))}>
+            {userLocation && refreshLoc ? <View className='flex-row items-center justify-center mb-2'><Text className='text-gray-100 '>{userLocation.city}&nbsp;</Text>
+               <ArrowPathIcon size={10} color='white' /></View > :
+               <ActivityIndicator className=' bottom-1' color="white" />
+            }
+         </TouchableOpacity>
          {/* {tab bar} */}
          <View className='flex-row justify-around'>
             <TouchableOpacity className='' onPress={() => setShowTab('Map')}>
@@ -85,7 +92,8 @@ const Home = () => {
                <Text className='text-gray-100'>Feeds</Text>
             </TouchableOpacity>
          </View>
-         {showTab === 'Feeds' &&
+         {
+            showTab === 'Feeds' &&
             <Feed />
          }
          {
