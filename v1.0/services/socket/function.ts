@@ -2,30 +2,31 @@ import { PublicKey } from '@solana/web3.js'
 import { Socket } from "socket.io-client";
 import { INFT, IProfile } from "../../Types";
 
-// export const socketMint = (
-//    buffer: Buffer,
-//    type: String,
-//    creator: String,
-//    supply: Number = 1,
-//    username: String,
-//    description: String,
-//    city: String,
-//    latitude: Number,
-//    longitude: Number
-// ) => {
-//    Socket.emit(
-//       "newMint",
-//       buffer,
-//       type,
-//       creator,
-//       supply,
-//       username,
-//       description,
-//       city,
-//       latitude,
-//       longitude
-//    );
-// };
+export const socketMint = (
+   Socket: Socket,
+   buffer: Buffer,
+   type: String,
+   creator: String,
+   supply: Number = 1,
+   username: String,
+   description: String,
+   city: String,
+   latitude: Number,
+   longitude: Number
+) => {
+   Socket.emit(
+      "newMint",
+      buffer,
+      type,
+      creator,
+      supply,
+      username,
+      description,
+      city,
+      latitude,
+      longitude
+   );
+};
 
 export const firstLogin = (Socket: Socket) => {
    return new Promise((resolve) => {

@@ -14,6 +14,7 @@ import { getUserLocation } from '../services/globals/functions';
 import MapView from 'react-native-maps';
 import ColorMode from '../components/ColorMode';
 import { atomPhantomWalletPublicKey } from '../services/globals';
+import { useNavigation } from '@react-navigation/native';
 
 
 const Home = () => {
@@ -25,6 +26,7 @@ const Home = () => {
    const [userLocation, setUserLocation] = useAtom(atomUserLocation);
    const [refreshLoc, setRefreshLoc] = useAtom(atomRefreshLoc);
    const mapRef = useRef<MapView>(null);
+   const navigation = useNavigation<any>();
 
    useEffect(() => {
       fetchData();
@@ -72,6 +74,9 @@ const Home = () => {
       <SafeAreaView className='h-full bg-zinc-900 flex-1 ' style={StyleSheet.absoluteFillObject}>
          {/* {title} */}
          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <TouchableOpacity className='justify-center items-center' onPress={() => navigation.navigate('NFTCreation')}>
+               <Text className='text-gray-100'>Beenzer loading..</Text>
+            </TouchableOpacity>
             <Text style={{ alignSelf: 'flex-start' }} className='text-green-600 text-3xl font-bold'>Beenzer</Text>
             <View style={{ alignSelf: 'flex-end' }} >
                <ColorMode />

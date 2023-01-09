@@ -1,9 +1,9 @@
-import { Camera, CameraType } from 'expo-camera';
+import { Camera, CameraCapturedPicture, CameraType } from 'expo-camera';
 import * as ScreenOrientation from 'expo';
 import { useState, useRef } from 'react';
 import { Button, Dimensions, Text, TouchableOpacity, View, ImageBackground, Image, ScrollView } from 'react-native';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { atomPic } from '../services/globals';
+import { atomPic, atomDataPic } from '../services/globals';
 import { useAtom } from 'jotai';
 import PostBeenzer from './PostBeenzer';
 import { useNavigation, NavigationProp, ParamListBase } from '@react-navigation/native';
@@ -18,6 +18,7 @@ export default function Picture() {
    const [keepPic, setKeepPic] = useState<boolean>(false);
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
    const [clicked, setClicked] = useState<boolean>(true);
+   const [dataPic, setDatapic] = useAtom(atomDataPic)
 
    if (!permission) {
       // Camera permissions are still loading
@@ -46,9 +47,11 @@ export default function Picture() {
       setClicked(false);
       if (camReady && cameraRef.current) {
          const data = await cameraRef.current.takePictureAsync({
+            base64: true,
+            quality: 0.5,
          }
          );
-         console.log(data)
+         setDatapic(data as CameraCapturedPicture)
          setPortrait(data.width < data.height);
          if (type === CameraType.front) {
             const flipped = await ImageManipulator.manipulateAsync(
@@ -59,12 +62,12 @@ export default function Picture() {
          } else {
             setPic(data.uri);
          }
-         console.log(data.uri)
       }
    }
 
    const handleSave = () => {
       setKeepPic(true);
+      setClicked(true);
    }
 
 
@@ -90,7 +93,9 @@ export default function Picture() {
                               <TouchableOpacity className="mt-1 w-52 bg-green-600  p-4 rounded-2xl" onPress={handleSave} >
                                  <Text className="font-semibold text-white text-center" > continue </Text>
                               </TouchableOpacity>
-                              <TouchableOpacity className="mb-10 mt-1 w-52 bg-red-600  p-4 rounded-2xl" onPress={() => setPic("")} >
+                              <TouchableOpacity className="mb-10 mt-1 w-52 bg-red-600  p-4 rounded-2xl" onPress={() => (
+                                 setPic(""), setClicked(true)
+                              )} >
                                  <Text className="font-semibold text-white text-center" > Do another one </Text>
                               </TouchableOpacity>
                            </View>

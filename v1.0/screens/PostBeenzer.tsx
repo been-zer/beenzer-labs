@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import {
    atomPic, atomPin, atomUserLocation, atomPinCity, atomPhantomWalletPublicKey, atomProfile, mapStyle,
-   atomDescription, atomSession, atomSharedSecret, atomDappKeyPair
+   atomDescription, atomSession, atomSharedSecret, atomDappKeyPair, atomTransacSuccess, atomDataPic
 } from '../services/globals'
 import { useAtom } from 'jotai'
 import MapView, { Marker, Callout } from 'react-native-maps'
@@ -12,6 +12,8 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 import { getCity } from '../services/globals/functions'
 import { useNavigation } from '@react-navigation/native'
 import { signAndSendTransaction } from '../services/phantom/sign'
+import { socketMint } from '../services/socket/function'
+import { atomSOCKET } from '../services/socket'
 
 
 const PostBeenzer = () => {
@@ -28,6 +30,9 @@ const PostBeenzer = () => {
    const [session, setSession] = useAtom(atomSession)
    const [sharedSecret, setSharedSecret] = useAtom(atomSharedSecret)
    const [dappKeyPair, setDappKeyPair] = useAtom(atomDappKeyPair)
+   const [transacSuccess, setTransacSuccess] = useAtom(atomTransacSuccess)
+   const [dataPic, setDataPic] = useAtom(atomDataPic)
+   const [SOCKET] = useAtom(atomSOCKET)
 
    const scrollToBottom = () => {
       if (scrollViewRef.current) {
@@ -57,6 +62,23 @@ const PostBeenzer = () => {
       }
    }, [pin])
 
+   useEffect(() => {
+      if (transacSuccess) {
+         socketMint(SOCKET,
+            Buffer.from(dataPic.base64 as any, "base64"),
+            "image/png",
+            profile.__pubkey__,
+            1,
+            profile._username_,
+            description,
+            pinCity,
+            pin.latitude,
+            pin.longitude,
+         )
+         setTransacSuccess(false)
+      }
+   }, [transacSuccess])
+
    const createBeenzer = async () => {
       console.log('signAndSendTransaction')
       signAndSendTransaction(session, phantomWalletPublicKey, sharedSecret, dappKeyPair)
@@ -79,6 +101,7 @@ const PostBeenzer = () => {
                      <Marker
                         coordinate={pin}
                         title={description}
+                        focusable={true}
                         // description={description}
                         // draggable={true}
                         onDragEnd={(e) => setPin(e.nativeEvent.coordinate)}
@@ -139,12 +162,12 @@ const PostBeenzer = () => {
                         <Text className='text-white'>{pinCity}</Text>
                      </View>
                      <View style={styles.rectangle}>
-                        <Text className='text-green-800'>CREATOR</Text>
-                        <Text className='text-white'>{profile[0].__pubkey__}</Text>
+                        <Text className='text-green-800'>USERNAME</Text>
+                        <Text className='text-white'>{profile._username_}</Text>
                      </View>
                      <View style={styles.rectangle}>
-                        <Text className='text-green-800'>USERNAME</Text>
-                        <Text className='text-white'>{profile[0]._username_}</Text>
+                        <Text className='text-green-800'>CREATOR</Text>
+                        <Text className='text-white'>{profile.__pubkey__}</Text>
                      </View>
                   </View>
 

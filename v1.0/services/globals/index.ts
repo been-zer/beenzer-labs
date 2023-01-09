@@ -2,6 +2,7 @@ import { PublicKey } from '@solana/web3.js'
 import nacl from 'tweetnacl'
 import { atom } from "jotai";
 import { INFT, IProfile, ILocation, coordinates } from '../../Types';
+import { CameraCapturedPicture } from 'expo-camera';
 
 export const atomDeepLink = atom("");
 export const atomDappKeyPair = atom(nacl.box.keyPair());
@@ -10,13 +11,15 @@ export const atomSession = atom("");
 export const atomPhantomWalletPublicKey = atom<PublicKey | string>("");
 export const atomActiveScreen = atom("Home");
 export const atomUserNFTs = atom<INFT[]>([]);
-export const atomProfile = atom<IProfile[]>([] as IProfile[]);
+export const atomProfile = atom<IProfile>({} as IProfile);
 export const atomUserLocation = atom<ILocation>({} as ILocation);
 export const atomRefreshLoc = atom<boolean>(false);
 export const atomPic = atom<string>("");
 export const atomPin = atom<coordinates>({} as coordinates);
 export const atomPinCity = atom<string>("");
 export const atomDescription = atom<string>("");
+export const atomTransacSuccess = atom<boolean>(false);
+export const atomDataPic = atom<CameraCapturedPicture>({} as CameraCapturedPicture);
 
 export const mapStyle = [
    {

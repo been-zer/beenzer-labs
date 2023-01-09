@@ -9,6 +9,7 @@ import PostBeenzer from './screens/PostBeenzer';
 import { atomDarkModeOn, atomDarkMode, atomLightMode } from './services/globals/darkmode';
 import { useAtom } from 'jotai';
 import Picture from './screens/Picture';
+import NFTCreation from './screens/NFTCreation';
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +63,12 @@ export default function App() {
             headerTintColor: 'white',
             headerBackTitle: '',
             headerBackVisible: true,
+          }} />
+          <Stack.Screen name="NFTCreation" component={NFTCreation} options={{
+            headerTitle: 'BEENZER in creation',
+            headerTransparent: true,
+            headerBackVisible: false,
+            headerTintColor: 'white',
           }} />
         </Stack.Navigator>
       </NavigationContainer >

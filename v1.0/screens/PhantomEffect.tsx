@@ -7,7 +7,7 @@ import * as Linking from "expo-linking";
 import { PublicKey } from "@solana/web3.js";
 import bs58 from "bs58";
 import { atom, useAtom } from "jotai";
-import { atomDappKeyPair, atomSharedSecret, atomSession, atomPhantomWalletPublicKey } from "../services/globals";
+import { atomDappKeyPair, atomSharedSecret, atomSession, atomPhantomWalletPublicKey, atomTransacSuccess } from "../services/globals";
 import { atomSOCKET } from "../services/socket";
 import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
 import { Vibration } from 'react-native';
@@ -22,6 +22,7 @@ const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
    const [phantomWalletPublicKey, setPhantomWalletPublicKey] = useAtom(atomPhantomWalletPublicKey)
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
    const [SOCKET] = useAtom(atomSOCKET);
+   const [transacSuccess, setTransacSuccess] = useAtom(atomTransacSuccess);
 
    // handle inbounds links
    useEffect(() => {
@@ -66,6 +67,8 @@ const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
             sharedSecret as any
          );
          console.log('signAndSendTransactionData', signAndSendTransactionData)
+         navigation.navigate("NFTCreation");
+         setTransacSuccess(true);
       }
 
    }, [deepLink]);
