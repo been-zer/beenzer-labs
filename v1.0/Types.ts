@@ -5,6 +5,11 @@ export interface ILocation {
    mocked?: boolean | undefined
 }
 
+export interface coordinates {
+   latitude: number;
+   longitude: number;
+}
+
 export interface LocationObjectCoords {
    latitude: number;
    longitude: number;

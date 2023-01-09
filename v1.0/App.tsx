@@ -63,7 +63,11 @@ export default function App() {
             headerBackVisible: true,
           }} />
           <Stack.Screen name="PostBeenzer" component={PostBeenzer} options={{
-            headerShown: false,
+            headerShown: true,
+            headerTitle: 'Drop a Beenzer',
+            headerTransparent: true,
+            headerTintColor: `${darkModeOn ? `${lightMode}` : `${darkMode}`}`,
+            headerBackVisible: false,
           }} />
         </Stack.Navigator>
       </NavigationContainer >

@@ -1,7 +1,7 @@
 import { PublicKey } from '@solana/web3.js'
 import nacl from 'tweetnacl'
 import { atom } from "jotai";
-import { INFT, IProfile, ILocation } from '../../Types';
+import { INFT, IProfile, ILocation, coordinates } from '../../Types';
 
 export const atomDeepLink = atom("");
 export const atomDappKeyPair = atom(nacl.box.keyPair());
@@ -14,6 +14,8 @@ export const atomProfile = atom<IProfile>({} as IProfile);
 export const atomUserLocation = atom<ILocation>({} as ILocation);
 export const atomRefreshLoc = atom<boolean>(false);
 export const atomPic = atom<string>("");
+export const atomPin = atom<coordinates>({} as coordinates);
+export const atomPinCity = atom<string>("");
 
 export const mapStyle = [
    {

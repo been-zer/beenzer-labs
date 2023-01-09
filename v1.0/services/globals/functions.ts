@@ -17,7 +17,7 @@ export const getUserLocation = async () => {
    return { ...userLocation, city };
 };
 
-const getCity = async (coordinates: {
+export const getCity = async (coordinates: {
    latitude: number,
    longitude: number,
 }) => {

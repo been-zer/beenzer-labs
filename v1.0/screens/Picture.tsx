@@ -1,11 +1,12 @@
 import { Camera, CameraType } from 'expo-camera';
 import * as ScreenOrientation from 'expo';
 import { useState, useRef } from 'react';
-import { Button, Dimensions, Text, TouchableOpacity, View, ImageBackground } from 'react-native';
+import { Button, Dimensions, Text, TouchableOpacity, View, ImageBackground, Image, ScrollView } from 'react-native';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { atomPic } from '../services/globals';
 import { useAtom } from 'jotai';
 import PostBeenzer from './PostBeenzer';
+import { useNavigation, NavigationProp, ParamListBase } from '@react-navigation/native';
 
 export default function Picture() {
    const [type, setType] = useState(CameraType.back);
@@ -15,6 +16,7 @@ export default function Picture() {
    const [portrait, setPortrait] = useState<boolean>(true);
    const [camReady, setCamReady] = useState<boolean>(false);
    const [keepPic, setKeepPic] = useState<boolean>(false);
+   const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
    if (!permission) {
       // Camera permissions are still loading
@@ -59,39 +61,52 @@ export default function Picture() {
       }
    }
 
-   const handleSave = async () => {
+   const handleSave = () => {
       setKeepPic(true);
    }
 
 
    return (
       <>
-         {keepPic && <PostBeenzer />}
-         {!keepPic &&
-            <View className='flex-1'>
-               {pic ? (
-                  <>
-                     <View className='flex-1 justify-center items-center bg-zinc-900' >
-                        <ImageBackground
-                           source={{ uri: pic }}
-                           resizeMode="contain"
-                           style={{
-                              transform: [{ rotate: portrait ? '0deg' : '90deg' }],
-                              flex: 1,
-                              width: '110%',
-                           }}>
-                        </ImageBackground>
-                        <TouchableOpacity className="mt-1 w-52 bg-green-600  p-4 rounded-2xl" onPress={handleSave} >
-                           <Text className="font-semibold text-white text-center" > continue </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity className="mb-10 mt-1 w-52 bg-red-600  p-4 rounded-2xl" onPress={() => setPic("")} >
-                           <Text className="font-semibold text-white text-center" > Do another one </Text>
-                        </TouchableOpacity>
-                     </View>
-                  </>
-               ) : (
-                  <Camera className='flex-1' type={type} ref={cameraRef} onCameraReady={cameraReady}>
+         <View className='flex-1'>
+            {pic ?
 
+               (
+                  <>
+                     {!keepPic &&
+                        <>
+                           <View className='flex-1 justify-center items-center bg-zinc-900' >
+                              <ImageBackground
+                                 source={{ uri: pic }}
+                                 resizeMode="contain"
+                                 style={{
+                                    transform: [{ rotate: portrait ? '0deg' : '90deg' }],
+                                    flex: 1,
+                                    width: '100%',
+                                 }}>
+                              </ImageBackground>
+                              <TouchableOpacity className="mt-1 w-52 bg-green-600  p-4 rounded-2xl" onPress={handleSave} >
+                                 <Text className="font-semibold text-white text-center" > continue </Text>
+                              </TouchableOpacity>
+                              <TouchableOpacity className="mb-10 mt-1 w-52 bg-red-600  p-4 rounded-2xl" onPress={() => setPic("")} >
+                                 <Text className="font-semibold text-white text-center" > Do another one </Text>
+                              </TouchableOpacity>
+                           </View>
+                        </>
+                     }
+                     {keepPic &&
+                        <>
+
+                           <PostBeenzer />
+
+                        </>
+                     }
+                  </>
+               ) :
+
+
+               (
+                  <Camera className='flex-1' type={type} ref={cameraRef} onCameraReady={cameraReady}>
                      <View className="flex-1 flex-row content-center border-2 border-indigo-50">
                         < View className='flex-1 flex-col justify-end items-center pb-5'>
                            <TouchableOpacity className=" " onPress={toggleCameraType}>
@@ -105,9 +120,8 @@ export default function Picture() {
                         </View>
                      </View>
                   </Camera >
-               )
-               }
-            </View >}
+               )}
+         </View>
       </>
    );
 }
