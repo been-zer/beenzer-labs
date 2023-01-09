@@ -63,3 +63,14 @@ export interface INFT {
    _type: string;
    _username: string;
 }
+
+export interface IDisplay {
+   description?: string;
+   creator?: any,
+   username?: string,
+   date?: string,
+   time?: string,
+   city?: string,
+   latitude?: number,
+   longitude?: number
+}

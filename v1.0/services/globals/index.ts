@@ -10,12 +10,13 @@ export const atomSession = atom("");
 export const atomPhantomWalletPublicKey = atom<PublicKey | string>("");
 export const atomActiveScreen = atom("Home");
 export const atomUserNFTs = atom<INFT[]>([]);
-export const atomProfile = atom<IProfile>({} as IProfile);
+export const atomProfile = atom<IProfile[]>([] as IProfile[]);
 export const atomUserLocation = atom<ILocation>({} as ILocation);
 export const atomRefreshLoc = atom<boolean>(false);
 export const atomPic = atom<string>("");
 export const atomPin = atom<coordinates>({} as coordinates);
 export const atomPinCity = atom<string>("");
+export const atomDescription = atom<string>("");
 
 export const mapStyle = [
    {

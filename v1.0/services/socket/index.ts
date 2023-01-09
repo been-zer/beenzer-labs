@@ -1,7 +1,12 @@
 import { atom } from 'jotai';
 import { io, Socket } from 'socket.io-client';
+import { REACT_APP_SERVER } from '../../config';
 
-export const SOCKET = io('https://3e72-212-31-49-235.eu.ngrok.io', { transports: ["websocket"] });
-SOCKET.on('serverConnection', (message: string) => { console.log(message) });
+const server = REACT_APP_SERVER;
+export const SOCKET = io(String(server), { transports: ["websocket"] });
+SOCKET.on('serverConnection', (message: string) => {
+   console.log(message)
+});
+console.log('test : ', server)
 
 export const atomSOCKET = atom<Socket>(SOCKET);

@@ -17,6 +17,7 @@ export default function Picture() {
    const [camReady, setCamReady] = useState<boolean>(false);
    const [keepPic, setKeepPic] = useState<boolean>(false);
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
+   const [clicked, setClicked] = useState<boolean>(true);
 
    if (!permission) {
       // Camera permissions are still loading
@@ -42,6 +43,7 @@ export default function Picture() {
    }
 
    const takePicture = async () => {
+      setClicked(false);
       if (camReady && cameraRef.current) {
          const data = await cameraRef.current.takePictureAsync({
          }
@@ -96,9 +98,7 @@ export default function Picture() {
                      }
                      {keepPic &&
                         <>
-
                            <PostBeenzer />
-
                         </>
                      }
                   </>
@@ -114,7 +114,7 @@ export default function Picture() {
                                  {type === "back" ? "Show your face 🔄" : "You're beautiful"}
                               </Text>
                            </TouchableOpacity>
-                           <TouchableOpacity className="w-52 bg-green-600 p-4 rounded-2xl" onPress={() => takePicture()}>
+                           <TouchableOpacity className="w-52 bg-green-600 p-4 rounded-2xl" disabled={!clicked} onPress={() => takePicture()}>
                               <Text className="font-semibold text-center"> BeenZer 📷 </Text>
                            </TouchableOpacity>
                         </View>

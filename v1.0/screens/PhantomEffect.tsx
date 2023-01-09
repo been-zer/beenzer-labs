@@ -59,6 +59,15 @@ const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
          }
          getNewUserStatus();
       }
+      else if (/onSignAndSendTransaction/.test(url.pathname)) {
+         const signAndSendTransactionData = decryptPayload(
+            params.get("data")!,
+            params.get("nonce")!,
+            sharedSecret as any
+         );
+         console.log('signAndSendTransactionData', signAndSendTransactionData)
+      }
+
    }, [deepLink]);
 
    return null;

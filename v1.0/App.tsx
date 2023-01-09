@@ -9,6 +9,7 @@ import PostBeenzer from './screens/PostBeenzer';
 import { atomDarkModeOn, atomDarkMode, atomLightMode } from './services/globals/darkmode';
 import { useAtom } from 'jotai';
 import Picture from './screens/Picture';
+
 const Stack = createNativeStackNavigator();
 
 const headerHide = {
@@ -61,13 +62,6 @@ export default function App() {
             headerTintColor: 'white',
             headerBackTitle: '',
             headerBackVisible: true,
-          }} />
-          <Stack.Screen name="PostBeenzer" component={PostBeenzer} options={{
-            headerShown: true,
-            headerTitle: 'Drop a Beenzer',
-            headerTransparent: true,
-            headerTintColor: `${darkModeOn ? `${lightMode}` : `${darkMode}`}`,
-            headerBackVisible: false,
           }} />
         </Stack.Navigator>
       </NavigationContainer >
