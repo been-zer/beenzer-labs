@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { SafeAreaView, StatusBar, View } from 'react-native';
+import { SafeAreaView, StatusBar, View, Text } from 'react-native';
 import Login from './screens/Login';
 import Home from './screens/Home';
 import Credentials from './screens/Credentials';
@@ -10,6 +10,9 @@ import { atomDarkModeOn, atomDarkMode, atomLightMode } from './services/globals/
 import { useAtom } from 'jotai';
 import Picture from './screens/Picture';
 import NFTCreation from './screens/NFTCreation';
+import Profile from './screens/Profile';
+import Logout from './screens/Logout';
+import EditProfile from './screens/EditProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +30,7 @@ export default function App() {
   const [lightMode, setLightMode] = useAtom(atomLightMode);
 
   return (
-    <SafeAreaView className={`${darkModeOn ? `bg-${darkMode}` : `bg-${lightMode}`} flex-1`}>
+    <View className={`${darkModeOn ? `bg-${darkMode}` : `bg-${lightMode}`} flex-1`}>
       <StatusBar barStyle={darkModeOn ? 'light-content' : 'dark-content'} />
       < NavigationContainer >
         <Stack.Navigator
@@ -70,8 +73,21 @@ export default function App() {
             headerBackVisible: false,
             headerTintColor: 'white',
           }} />
+          <Stack.Screen name="Profile" component={Profile} options={{
+            headerTitle: 'Profile',
+            headerTransparent: true,
+            headerBackVisible: false,
+            headerTintColor: 'white',
+            headerRight: () => (<Logout />)
+          }} />
+          <Stack.Screen name="EditProfile" component={EditProfile} options={{
+            headerTitle: 'Edit Profile',
+            headerTransparent: true,
+            headerBackVisible: true,
+            headerTintColor: 'white',
+          }} />
         </Stack.Navigator>
       </NavigationContainer >
-    </SafeAreaView>
+    </View>
   );
 }

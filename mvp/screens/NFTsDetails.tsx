@@ -6,7 +6,6 @@ import { userNFTs } from '../types/types';
 const NFTsDetails = ({ NFTselected }: { NFTselected: userNFTs }) => {
    console.log('NFTselected', NFTselected)
    return (
-
       <SafeAreaView className="bg-zinc-900 h-screen w-screen android:mt-6">
          <Header title="Profile" />
          <ScrollView>

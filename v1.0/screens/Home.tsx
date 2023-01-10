@@ -14,7 +14,7 @@ import { getUserLocation } from '../services/globals/functions';
 import MapView from 'react-native-maps';
 import ColorMode from '../components/ColorMode';
 import { atomPhantomWalletPublicKey } from '../services/globals';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 
 
 const Home = () => {
@@ -26,7 +26,7 @@ const Home = () => {
    const [userLocation, setUserLocation] = useAtom(atomUserLocation);
    const [refreshLoc, setRefreshLoc] = useAtom(atomRefreshLoc);
    const mapRef = useRef<MapView>(null);
-   const navigation = useNavigation<any>();
+   const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
    useEffect(() => {
       fetchData();

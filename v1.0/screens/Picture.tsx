@@ -3,7 +3,7 @@ import * as ScreenOrientation from 'expo';
 import { useState, useRef } from 'react';
 import { Button, Dimensions, Text, TouchableOpacity, View, ImageBackground, Image, ScrollView } from 'react-native';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { atomPic, atomDataPic } from '../services/globals';
+import { atomPic, atomDataPic, atomKeepPic } from '../services/globals';
 import { useAtom } from 'jotai';
 import PostBeenzer from './PostBeenzer';
 import { useNavigation, NavigationProp, ParamListBase } from '@react-navigation/native';
@@ -15,7 +15,7 @@ export default function Picture() {
    const [pic, setPic] = useAtom(atomPic);
    const [portrait, setPortrait] = useState<boolean>(true);
    const [camReady, setCamReady] = useState<boolean>(false);
-   const [keepPic, setKeepPic] = useState<boolean>(false);
+   const [keepPic, setKeepPic] = useAtom(atomKeepPic);
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
    const [clicked, setClicked] = useState<boolean>(true);
    const [dataPic, setDatapic] = useAtom(atomDataPic)
@@ -70,7 +70,6 @@ export default function Picture() {
       setClicked(true);
    }
 
-
    return (
       <>
          <View className='flex-1'>
@@ -108,7 +107,6 @@ export default function Picture() {
                      }
                   </>
                ) :
-
 
                (
                   <Camera className='flex-1' type={type} ref={cameraRef} onCameraReady={cameraReady}>

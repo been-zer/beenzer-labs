@@ -7,6 +7,5 @@ export const SOCKET = io(String(server), { transports: ["websocket"] });
 SOCKET.on('serverConnection', (message: string) => {
    console.log(message)
 });
-console.log('test : ', server)
 
 export const atomSOCKET = atom<Socket>(SOCKET);

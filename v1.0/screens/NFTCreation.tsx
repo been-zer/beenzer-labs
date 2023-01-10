@@ -2,16 +2,17 @@ import { View, Text, ScrollView, SafeAreaView, ActivityIndicator, Linking, Touch
 import { useState } from 'react'
 import Footer from './Footer'
 import { atomSOCKET } from '../services/socket';
+import { atomMintLogs, atomMintingOver } from '../services/globals';
 import { useAtom } from 'jotai'
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 
 
 const NFTCreation = () => {
 
-   const [mintLogs, setMintLogs] = useState<string[]>([])
-   const [mintingOver, setMintingOver] = useState(false)
+   const [mintLogs, setMintLogs] = useAtom(atomMintLogs)
+   const [mintingOver, setMintingOver] = useAtom(atomMintingOver)
    const [SOCKET] = useAtom(atomSOCKET)
-   const navigation = useNavigation<any>();
+   const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
    SOCKET.on('mintLogs', (data: string) => {
       if (data != 'true') {

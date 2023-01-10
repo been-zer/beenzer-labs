@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native'
 import { signAndSendTransaction } from '../services/phantom/sign'
 import { socketMint } from '../services/socket/function'
 import { atomSOCKET } from '../services/socket'
+import Properties from '../components/Properties'
 
 
 const PostBeenzer = () => {
@@ -67,9 +68,9 @@ const PostBeenzer = () => {
          socketMint(SOCKET,
             Buffer.from(dataPic.base64 as any, "base64"),
             "image/png",
-            profile.__pubkey__,
+            profile[0].__pubkey__,
             1,
-            profile._username_,
+            profile[0]._username_,
             description,
             pinCity,
             pin.latitude,
@@ -79,7 +80,7 @@ const PostBeenzer = () => {
       }
    }, [transacSuccess])
 
-   const createBeenzer = async () => {
+   const createBeenzer = () => {
       console.log('signAndSendTransaction')
       signAndSendTransaction(session, phantomWalletPublicKey, sharedSecret, dappKeyPair)
    }
@@ -101,7 +102,7 @@ const PostBeenzer = () => {
                      <Marker
                         coordinate={pin}
                         title={description}
-                        focusable={true}
+                        // focusable={true}
                         // description={description}
                         // draggable={true}
                         onDragEnd={(e) => setPin(e.nativeEvent.coordinate)}
@@ -110,6 +111,7 @@ const PostBeenzer = () => {
                         <ImageBackground
                            source={{ uri: pic }}
                            style={{ width: 50, height: 50 }}
+                           imageStyle={{ borderRadius: 50 }}
                         />
                         {/* <Callout> */}
                         {/* <Text>My Callout</Text>
@@ -141,7 +143,7 @@ const PostBeenzer = () => {
                      >
                         <Text className="font-semibold text-center">
                            {" "}
-                           Drop BeenZer + Mint NFT
+                           Drop Beenzer 📍 Mint NFT
                         </Text>
                      </TouchableOpacity>
                   </View>
@@ -149,28 +151,12 @@ const PostBeenzer = () => {
                      <Text className='text-green-800 text-xl'>PROPERTIES</Text>
                   </View>
                   <View className='flex-row flex-wrap mt-2'>
-                     <View style={styles.rectangle}>
-                        <Text className='text-green-800'>LATITUDE</Text>
-                        <Text className='text-white'>{pin.latitude}</Text>
-                     </View>
-                     <View style={styles.rectangle}>
-                        <Text className='text-green-800'>LONGITUDE</Text>
-                        <Text className='text-white'>{pin.longitude}</Text>
-                     </View>
-                     <View style={styles.rectangle}>
-                        <Text className='text-green-800'>CITY</Text>
-                        <Text className='text-white'>{pinCity}</Text>
-                     </View>
-                     <View style={styles.rectangle}>
-                        <Text className='text-green-800'>USERNAME</Text>
-                        <Text className='text-white'>{profile._username_}</Text>
-                     </View>
-                     <View style={styles.rectangle}>
-                        <Text className='text-green-800'>CREATOR</Text>
-                        <Text className='text-white'>{profile.__pubkey__}</Text>
-                     </View>
+                     <Properties props={pin.latitude} propsTitle={'LATITUDE'} />
+                     <Properties props={pin.longitude} propsTitle={'LONGITUDE'} />
+                     <Properties props={pinCity} propsTitle={'CITY'} />
+                     <Properties props={profile[0]._username_} propsTitle={'USERNAME'} />
+                     <Properties props={profile[0].__pubkey__} propsTitle={'CREATOR'} />
                   </View>
-
                </ScrollView>
             }
             {!userLocation.coords &&
@@ -188,12 +174,6 @@ const PostBeenzer = () => {
 }
 
 const styles = StyleSheet.create({
-   rectangle: {
-      borderColor: 'gray',
-      borderWidth: 1,
-      padding: 10,
-      margin: 1,
-   },
    input: {
       borderColor: "gray",
       width: "100%",

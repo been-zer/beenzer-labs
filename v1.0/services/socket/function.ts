@@ -24,7 +24,9 @@ export const socketMint = (
       description,
       city,
       latitude,
-      longitude
+      longitude, (status: string) => {
+         console.log(status)
+      }
    );
 };
 
@@ -57,8 +59,8 @@ export const handleNewUserCreated = (Socket: Socket, pubkey: PublicKey | string,
 }
 
 export const socketUserInfo = (Socket: Socket) => {
-   return new Promise<IProfile>((resolve) => {
-      Socket.on('userInfo', (receivedInfos: IProfile) => {
+   return new Promise<IProfile[]>((resolve) => {
+      Socket.on('userInfo', (receivedInfos: IProfile[]) => {
          resolve(receivedInfos)
       });
    })
@@ -70,6 +72,10 @@ export const socketUserNFTs = (Socket: Socket) => {
          resolve(receivedNfts)
       });
    })
+}
+
+export const updateUserProfile = (Socket: Socket, pubkey: PublicKey | string, update: string, value: string | undefined) => {
+   Socket.emit('updateUser', pubkey, update, value)
 }
 
 // export const socketUserNFTs = async () => {

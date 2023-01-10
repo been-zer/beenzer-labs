@@ -4,7 +4,7 @@ import { connect } from "../services/phantom/login"
 import * as Linking from "expo-linking";
 import { useAtom } from "jotai";
 import { atomDeepLink, atomDappKeyPair } from "../services/globals";
-import PhantomEffect from "../screens/PhantomEffect";
+import PhantomEffect from "./PhantomEffect";
 import { useNavigation } from "@react-navigation/native";
 import { atomDarkModeOn, atomDarkMode, atomLightMode, atomPinkMode, useSwipe } from "../services/globals/darkmode";
 import { fadeIn } from "../services/globals/functions";
@@ -64,7 +64,7 @@ const Login = () => {
             <View className="self-center">
                <Image
                   style={{ tintColor: darkModeOn ? `${lightMode}` : 'pink' }}
-                  className="h-52 w-52 shadow-green-500 "
+                  className="h-36 w-36 shadow-green-500 "
                   source={require("../assets/New_Artwork_e.png")}
                />
             </View>
@@ -78,6 +78,11 @@ const Login = () => {
                   className={`text-4xl font-extrabold ${darkModeOn ? `text-white` : `text-${darkMode}`}`}
                >
                   Beenzer
+               </Text>
+               <Text
+                  className={` ${darkModeOn ? `text-white` : `text-${darkMode}`}`}
+               >
+                  Done that
                </Text>
             </Animated.View>
             <View className="items-center">
@@ -99,11 +104,9 @@ const Login = () => {
             </View>
             <Text
                style={{ fontFamily: "Avenir-Black" }}
-               className={`${darkModeOn ? `text-${lightMode}` : `${darkMode}`} font-medium text-center`}
+               className={`${darkModeOn ? `text-${lightMode}` : `${darkMode}`} font-medium text-justify ml-5 mr-5`}
             >
-               Welcome to BeenZer, the first fully decentralized social app where
-               you OWN your content. Drop your stories in the map forever minting
-               them and sell your NFTs in the marketplaces.
+               Beenzer - the ultimate social app for true digital ownership. Share and mint your stories on the map, monetize your creations with NFT marketplaces. Take control of your online legacy
             </Text>
          </View>
          <PhantomEffect deepLink={deepLink} />

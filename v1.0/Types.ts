@@ -74,3 +74,14 @@ export interface IDisplay {
    latitude?: number,
    longitude?: number
 }
+
+export interface IUpdateUser {
+   _username_?: string,
+   _description?: string,
+   _name?: string,
+   _email?: string,
+   _birthdate?: string,
+   _phone?: string,
+   _city?: string,
+   _country?: string,
+}
