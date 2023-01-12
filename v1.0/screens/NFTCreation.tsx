@@ -1,21 +1,21 @@
 import { View, Text, ScrollView, SafeAreaView, ActivityIndicator, Linking, TouchableOpacity, Vibration } from 'react-native'
 import { useState } from 'react'
-import Footer from './Footer'
 import { atomSOCKET } from '../services/socket';
-import { atomMintLogs, atomMintingOver } from '../services/globals';
+import { atomMintLogs, atomMintingOver, atomPic } from '../services/globals';
 import { useAtom } from 'jotai'
-import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
-
+import OpenURLButton from '../components/OpenURLButton'
 
 const NFTCreation = () => {
 
    const [mintLogs, setMintLogs] = useAtom(atomMintLogs)
    const [mintingOver, setMintingOver] = useAtom(atomMintingOver)
    const [SOCKET] = useAtom(atomSOCKET)
-   const navigation = useNavigation<NavigationProp<ParamListBase>>();
+   const [pic, setPic] = useAtom(atomPic)
+   const phantomURL = 'https://phantom.app/ul/'
 
    SOCKET.on('mintLogs', (data: string) => {
       if (data != 'true') {
+         setPic('')
          setMintLogs([...mintLogs, data])
          console.log(mintLogs)
       } else {
@@ -24,41 +24,27 @@ const NFTCreation = () => {
          // setMintLogs([]);
       }
    })
-
-   function makeClickable(log: any): any {
-      const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
-      const url = log.match(urlRegex);
-      if (url) {
-         return log.replace(url, <Text style={{ color: 'blue' }} onPress={() => Linking.openURL(url)}>{url}</Text>);
-      } else {
-         return log;
-      }
-   }
+   setMintingOver(true);
 
    return (
-      <SafeAreaView className="bg-zinc-900 h-screen ">
-         <ScrollView className='ml-5 mr-5 bg-zinc-800'>
-            <View className='border border-white rounded-xl  '>
+      <SafeAreaView className="bg-zinc-900 flex-1">
+         <View className='border border-white  rounded-xl flex-1 ml-5 mr-5'>
+            <ScrollView className=' bg-zinc-800 rounded-xl' contentContainerStyle={{ flexGrow: 1 }}>
                {mintLogs.map((log, index) => {
                   return (
                      <View className='p-3 mt-1 text-[#3f6212]' key={index}>
                         <View>
-                           <Text className='mt-1 text-lg text-white text-center px-4'>✅ {makeClickable(log)}</Text>
+                           <Text className='mt-1 text-lg text-white text-center px-4'>✅ {log}</Text>
                         </View>
                      </View>
                   )
                })}
-            </View >
-            {!mintingOver && <ActivityIndicator size="large" color="green" />}
-            <TouchableOpacity
-               className="mt-2 w-full bg-green-600  p-4 rounded-2xl"
-               onPress={() => navigation.navigate('Home')}
-            >
-               <Text className="font-semibold text-center">Back to Home</Text>
-            </TouchableOpacity>
-         </ScrollView >
-
-         <Footer />
+            </ScrollView >
+         </View >
+         {!mintingOver && <ActivityIndicator className='mt-2' size="large" color="green" />}
+         {mintingOver && <OpenURLButton url={phantomURL}>
+            Go to phantom
+         </OpenURLButton>}
       </SafeAreaView >
    );
 };

@@ -1,5 +1,6 @@
 import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, Alert, SafeAreaView, ScrollView } from "react-native"
+import { useAtom } from "jotai";
 
 const BeenzerMedia = ({ title, menu }: { title: string, menu: string }) => {
 

@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import {
    atomPic, atomPin, atomUserLocation, atomPinCity, atomPhantomWalletPublicKey, atomProfile, mapStyle,
-   atomDescription, atomSession, atomSharedSecret, atomDappKeyPair, atomTransacSuccess, atomDataPic
+   atomDescription, atomSession, atomSharedSecret, atomDappKeyPair, atomTransacSuccess, atomDataPic,
 } from '../services/globals'
 import { useAtom } from 'jotai'
 import MapView, { Marker, Callout } from 'react-native-maps'
@@ -44,6 +44,9 @@ const PostBeenzer = () => {
    useLayoutEffect(() => {
       navigation.setOptions({
          headerTitle: 'Drop Beenzer',
+         headerTitleStyle: { color: 'white' },
+         headerTransparent: true,
+
       })
    }, [navigation])
 
@@ -87,9 +90,10 @@ const PostBeenzer = () => {
 
    return (
       <>
-         <SafeAreaView className="bg-zinc-800" style={StyleSheet.absoluteFillObject}>
-            {userLocation.coords &&
-               <ScrollView className="flex-1 ml-5 mr-5" ref={scrollViewRef}>
+         <SafeAreaView className="bg-zinc-800" style={StyleSheet.absoluteFillObject} >
+            {
+               userLocation.coords &&
+               <ScrollView className="flex-1 ml-5 mr-5" ref={scrollViewRef} showsVerticalScrollIndicator={false}>
                   <MapView style={{ height: 300 }} provider='google'
                      customMapStyle={mapStyle}
                      initialRegion={{

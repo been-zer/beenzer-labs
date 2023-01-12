@@ -24,10 +24,9 @@ export const socketMint = (
       description,
       city,
       latitude,
-      longitude, (status: string) => {
-         console.log(status)
-      }
+      longitude
    );
+   return true
 };
 
 export const firstLogin = (Socket: Socket) => {

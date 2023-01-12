@@ -13,6 +13,7 @@ import NFTCreation from './screens/NFTCreation';
 import Profile from './screens/Profile';
 import Logout from './screens/Logout';
 import EditProfile from './screens/EditProfile';
+import Notifications from './screens/Notifications';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,7 @@ export default function App() {
         >
           <Stack.Screen name="Login" component={Login} options={{
             headerShown: false,
+            animation: 'none',
           }} />
           <Stack.Screen
             name="Credentials"
@@ -48,10 +50,12 @@ export default function App() {
               headerTintColor: `${darkModeOn ? `${lightMode}` : `${darkMode}`}`,
               headerBackTitle: 'Back',
               headerBackTitleVisible: false,
+              animation: 'none',
             }}
           />
           <Stack.Screen name="Home" component={Home} options={{
             headerShown: false,
+            animation: 'none',
           }} />
           <Stack.Screen name="BeenzerMenu" component={BeenzerMenu} options={{
             headerShown: true,
@@ -59,6 +63,8 @@ export default function App() {
             headerTransparent: true,
             headerTintColor: 'white',
             headerBackVisible: false,
+            animation: 'none',
+
           }} />
           <Stack.Screen name="Picture" component={Picture} options={{
             headerTitle: '',
@@ -66,25 +72,35 @@ export default function App() {
             headerTintColor: 'white',
             headerBackTitle: '',
             headerBackVisible: true,
+            headerBackButtonMenuEnabled: true,
+            animation: 'none',
           }} />
           <Stack.Screen name="NFTCreation" component={NFTCreation} options={{
             headerTitle: 'BEENZER in creation',
             headerTransparent: true,
             headerBackVisible: false,
             headerTintColor: 'white',
+            animation: 'none',
           }} />
           <Stack.Screen name="Profile" component={Profile} options={{
             headerTitle: 'Profile',
             headerTransparent: true,
             headerBackVisible: false,
             headerTintColor: 'white',
-            headerRight: () => (<Logout />)
+            headerRight: () => (<Logout />),
+            animation: 'none',
           }} />
           <Stack.Screen name="EditProfile" component={EditProfile} options={{
             headerTitle: 'Edit Profile',
             headerTransparent: true,
             headerBackVisible: true,
             headerTintColor: 'white',
+            animation: 'none',
+          }} />
+          <Stack.Screen name="PostBeenzer" component={PostBeenzer} options={{ animation: 'none', }} />
+          <Stack.Screen name="Notifications" component={Notifications} options={{
+            headerShown: false,
+            animation: 'none',
           }} />
         </Stack.Navigator>
       </NavigationContainer >

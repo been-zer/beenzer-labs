@@ -16,9 +16,9 @@ const ColorMode = () => {
             <TouchableOpacity onPress={() => setDarkModeOn(!darkModeOn)
             }>
                {darkModeOn ? (
-                  <Ionicons name="ios-moon" size={32} color={`${lightMode}`} />
+                  <Ionicons name="ios-moon" size={24} color={`${lightMode}`} />
                ) : (
-                  <Ionicons name="ios-sunny" size={32} color="pink" />
+                  <Ionicons name="ios-sunny" size={24} color="pink" />
                )}
             </TouchableOpacity>
          </View >

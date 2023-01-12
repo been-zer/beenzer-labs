@@ -72,7 +72,6 @@ const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
          );
          console.log('signAndSendTransactionData', signAndSendTransactionData)
          navigation.navigate("NFTCreation");
-         setPic("")
          setTransacSuccess(true);
       }
       else if (/onDisconnect/.test(url.pathname)) {

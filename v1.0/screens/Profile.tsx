@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useLayoutEffect, useEffect } from 'react'
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Image, StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import { mapStyle } from '../services/globals'
 import { ArrowRightOnRectangleIcon, PencilSquareIcon } from "react-native-heroicons/solid"
 import { useAtom } from 'jotai'
-import { atomProfile, atomUserLocation } from '../services/globals'
+import { atomProfile, atomUserLocation, atomActiveScreen } from '../services/globals'
 import GradientText from "../components/GradientText"
 import MapView from 'react-native-maps'
 import ProfileTab from '../components/ProfileTab'
@@ -11,15 +11,24 @@ import ProfileCollection from '../components/ProfileCollection'
 import ProfileMap from '../components/ProfileMap'
 import ProfileFriends from '../components/ProfileFriends'
 import Footer from './Footer'
-import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native'
+import { NavigationProp, ParamListBase, useIsFocused, useNavigation } from '@react-navigation/native'
 
 const Profile = () => {
 
+
+
    const [profile, setProfile] = useAtom(atomProfile)
-   const [userLocation, setUserLocation] = useAtom(atomUserLocation)
    const [showProfileTab, setShowProfileTab] = useState<string>('Profile')
    const [showDetails, setShowDetails] = useState(false);
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
+   const [active, setActive] = useAtom(atomActiveScreen)
+   const isFocused = useIsFocused();
+
+   useEffect(() => {
+      if (isFocused) {
+         setActive('Profile')
+      }
+   }, [isFocused]);
 
    const editProfile = () => {
       navigation.navigate<any>('EditProfile')

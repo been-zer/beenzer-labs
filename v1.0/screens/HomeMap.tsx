@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 import { atomUserLocation } from '../services/globals';
 
 
-const Map = ({ mapRef }: any) => {
+const HomeMap = ({ mapRef }: any) => {
 
    const [userLocation, setUserLocation] = useAtom(atomUserLocation);
 
@@ -34,8 +34,7 @@ const Map = ({ mapRef }: any) => {
 const styles = StyleSheet.create({
    map: {
       ...StyleSheet.absoluteFillObject,
-      height: '120%',
    }
 });
 
-export default Map;
+export default HomeMap;

@@ -15,7 +15,6 @@ export default function Picture() {
    const [pic, setPic] = useAtom(atomPic);
    const [portrait, setPortrait] = useState<boolean>(true);
    const [camReady, setCamReady] = useState<boolean>(false);
-   const [keepPic, setKeepPic] = useAtom(atomKeepPic);
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
    const [clicked, setClicked] = useState<boolean>(true);
    const [dataPic, setDatapic] = useAtom(atomDataPic)
@@ -66,8 +65,8 @@ export default function Picture() {
    }
 
    const handleSave = () => {
-      setKeepPic(true);
       setClicked(true);
+      navigation.navigate('PostBeenzer');
    }
 
    return (
@@ -77,34 +76,25 @@ export default function Picture() {
 
                (
                   <>
-                     {!keepPic &&
-                        <>
-                           <View className='flex-1 justify-center items-center bg-zinc-900' >
-                              <ImageBackground
-                                 source={{ uri: pic }}
-                                 resizeMode="contain"
-                                 style={{
-                                    transform: [{ rotate: portrait ? '0deg' : '90deg' }],
-                                    flex: 1,
-                                    width: '100%',
-                                 }}>
-                              </ImageBackground>
-                              <TouchableOpacity className="mt-1 w-52 bg-green-600  p-4 rounded-2xl" onPress={handleSave} >
-                                 <Text className="font-semibold text-white text-center" > continue </Text>
-                              </TouchableOpacity>
-                              <TouchableOpacity className="mb-10 mt-1 w-52 bg-red-600  p-4 rounded-2xl" onPress={() => (
-                                 setPic(""), setClicked(true)
-                              )} >
-                                 <Text className="font-semibold text-white text-center" > Do another one </Text>
-                              </TouchableOpacity>
-                           </View>
-                        </>
-                     }
-                     {keepPic &&
-                        <>
-                           <PostBeenzer />
-                        </>
-                     }
+                     <View className='flex-1 justify-center items-center bg-zinc-900' >
+                        <ImageBackground
+                           source={{ uri: pic }}
+                           resizeMode="contain"
+                           style={{
+                              transform: [{ rotate: portrait ? '0deg' : '90deg' }],
+                              flex: 1,
+                              width: '100%',
+                           }}>
+                        </ImageBackground>
+                        <TouchableOpacity className="mt-1 w-52 bg-green-600  p-4 rounded-2xl" onPress={handleSave} >
+                           <Text className="font-semibold text-white text-center" > continue </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity className="mb-10 mt-1 w-52 bg-red-600  p-4 rounded-2xl" onPress={() => (
+                           setPic(""), setClicked(true)
+                        )} >
+                           <Text className="font-semibold text-white text-center" > Do another one </Text>
+                        </TouchableOpacity>
+                     </View>
                   </>
                ) :
 

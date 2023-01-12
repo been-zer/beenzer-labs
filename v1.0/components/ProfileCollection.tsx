@@ -23,17 +23,24 @@ const ProfileCollection = ({ setShowDetails, showDetails }: { showDetails: boole
       <>
          {!showDetails &&
             <FlatList
+               className='mt-2 '
                data={userNFTs}
-               numColumns={3}
+               inverted={true}
+               numColumns={2}
                renderItem={({ item }) => {
                   const borderColor = item._creator === profile[0].__pubkey__ ? 'black' : 'green';
                   return (
-                     <TouchableOpacity onPress={() => handleShowDetails(item)} onLongPress={() => newProfilPic(item._asset)}>
-                        <Image
-                           source={{ uri: item._asset }}
-                           style={{ width: 150, height: 150, margin: 10, borderWidth: 1, borderColor, borderRadius: 10 }}
-                        />
-                     </TouchableOpacity>
+                     <>
+                        <TouchableOpacity onPress={() => handleShowDetails(item)} onLongPress={() => newProfilPic(item._asset)}>
+                           <View className="flex flex-col items-center">
+                              <Text className='text-white font-bold'>BEENZER #{item._id_}</Text>
+                              <Image
+                                 source={{ uri: item._asset }}
+                                 style={{ width: 150, height: 150, marginRight: 10, marginLeft: 10, borderWidth: 1, borderColor, borderRadius: 10 }}
+                              />
+                           </View>
+                        </TouchableOpacity>
+                     </>
                   );
                }}
                keyExtractor={(item) => item.__token__}

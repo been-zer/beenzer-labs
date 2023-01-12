@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity } from "react-native"
 import Footer from './Footer';
-import Map from './Map';
+import HomeMap from './HomeMap';
 import { ActivityIndicator } from 'react-native-paper';
 import { ArrowPathIcon } from 'react-native-heroicons/outline'
 import { atomUserNFTs, atomProfile } from '../services/globals';
@@ -13,8 +13,11 @@ import Feed from './Feed';
 import { getUserLocation } from '../services/globals/functions';
 import MapView from 'react-native-maps';
 import ColorMode from '../components/ColorMode';
-import { atomPhantomWalletPublicKey } from '../services/globals';
-import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
+import { atomPhantomWalletPublicKey, atomActiveScreen } from '../services/globals';
+import { NavigationProp, ParamListBase, useNavigation, useIsFocused } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import DisplayButton from '../components/DisplayButton';
+import { } from "@react-navigation/native";
 
 
 const Home = () => {
@@ -22,11 +25,19 @@ const Home = () => {
    const [profile, setProfile] = useAtom(atomProfile);
    const [userNFTs, setUserNFTs] = useAtom(atomUserNFTs);
    const [SOCKET] = useAtom(atomSOCKET);
-   const [showTab, setShowTab] = useState('Map');
    const [userLocation, setUserLocation] = useAtom(atomUserLocation);
    const [refreshLoc, setRefreshLoc] = useAtom(atomRefreshLoc);
    const mapRef = useRef<MapView>(null);
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
+   const [active, setActive] = useAtom(atomActiveScreen)
+   const [display, setDisplay] = useState('Map')
+   const isFocused = useIsFocused();
+
+   useEffect(() => {
+      if (isFocused) {
+         setActive('Home')
+      }
+   }, [isFocused]);
 
    useEffect(() => {
       fetchData();
@@ -73,9 +84,9 @@ const Home = () => {
    return (
       <SafeAreaView className='h-full bg-zinc-900 flex-1 ' style={StyleSheet.absoluteFillObject}>
          {/* {title} */}
-         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <TouchableOpacity className='justify-center items-center' onPress={() => navigation.navigate('NFTCreation')}>
-               <Text className='text-gray-100'>Beenzer loading..</Text>
+         <View className='flex-row justify-around'>
+            <TouchableOpacity className='justify-center items-center' onPress={() => navigation.navigate('Notifications')}>
+               <Ionicons name="notifications" size={24} color="white" />
             </TouchableOpacity>
             <Text style={{ alignSelf: 'flex-start' }} className='text-green-600 text-3xl font-bold'>Beenzer</Text>
             <View style={{ alignSelf: 'flex-end' }} >
@@ -90,20 +101,17 @@ const Home = () => {
          </TouchableOpacity>
          {/* {tab bar} */}
          <View className='flex-row justify-around'>
-            <TouchableOpacity className='' onPress={() => setShowTab('Map')}>
-               <Text className='text-gray-100'>Map</Text>
-            </TouchableOpacity>
-            <TouchableOpacity className='' onPress={() => setShowTab('Feeds')}>
-               <Text className='text-gray-100'>Feeds</Text>
-            </TouchableOpacity>
+            <DisplayButton title="Map" display={display} setDisplay={setDisplay} />
+            <DisplayButton title="Feeds" display={display} setDisplay={setDisplay} />
+
          </View>
          {
-            showTab === 'Feeds' &&
+            display === 'Feeds' &&
             <Feed />
          }
          {
-            showTab === 'Map' &&
-            <Map mapRef={mapRef} />
+            display === 'Map' &&
+            <HomeMap mapRef={mapRef} />
          }
          <Footer />
       </SafeAreaView >

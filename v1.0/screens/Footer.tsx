@@ -28,7 +28,7 @@ export default function Footer() {
             {active === 'Friends' && <View className='bg-green-500 w-2 h-2 rounded-full' />}
          </TouchableOpacity>
 
-         <TouchableOpacity className=' flex-col w-24 h-16 justify-center items-center' onPress={() => handleNavigation('BeenzerMenu')}>
+         <TouchableOpacity className=' flex-col w-24 h-16 justify-center items-center' onPress={() => handleNavigation('Picture')} onLongPress={() => handleNavigation('BeenzerMenu')}>
             <PlusCircleIcon size={35} color='#16a34a' />
             {active === 'BeenzerMenu' && <View className='bg-green-500 w-2 h-2 rounded-full' />}
          </TouchableOpacity>
