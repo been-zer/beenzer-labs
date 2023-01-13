@@ -28,7 +28,6 @@ const Logout = () => {
             color="#30a24f"
             className="bg-sky-500/50 "
          />
-         <Text className="text-gray-100 hover:text-white">Logout</Text>
       </TouchableOpacity>
    )
 }

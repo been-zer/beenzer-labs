@@ -1,6 +1,6 @@
 import { PublicKey } from '@solana/web3.js'
 import { Socket } from "socket.io-client";
-import { INFT, IProfile } from "../../Types";
+import { INFT, IProfile, IUser } from "../../Types";
 
 export const socketMint = (
    Socket: Socket,
@@ -73,9 +73,30 @@ export const socketUserNFTs = (Socket: Socket) => {
    })
 }
 
-export const updateUserProfile = (Socket: Socket, pubkey: PublicKey | string, update: string, value: string | undefined) => {
+export const updateUserProfile = (Socket: Socket, pubkey: PublicKey | string, update: string, value: string) => {
    Socket.emit('updateUser', pubkey, update, value)
 }
+
+export const socketFriends = (Socket: Socket, searchQuery: string) => {
+   Socket.emit("searchUsers", searchQuery);
+   return new Promise<IUser[]>((resolve) => {
+      Socket.on("searchUsersRes", (users: IUser[]) => {
+         resolve(users);
+      });
+   });
+}
+
+export const socketAddFriend = (Socket: Socket, pubkey: string, pubkey2: string) => {
+   Socket.emit('addFriend', pubkey, pubkey2);
+   console.log('addFriend', pubkey, pubkey2)
+   return new Promise<boolean>((resolve) => {
+      console.log('addFriendRes')
+      Socket.on("addFriendRes", (res: boolean) => {
+         resolve(res);
+      });
+   });
+}
+
 
 // export const socketUserNFTs = async () => {
 //    SOCKET.on("userNFTs", (nfts: Array<any>) => {

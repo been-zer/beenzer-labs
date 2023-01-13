@@ -5,7 +5,7 @@ import { atomMintLogs, atomMintingOver, atomPic } from '../services/globals';
 import { useAtom } from 'jotai'
 import OpenURLButton from '../components/OpenURLButton'
 
-const NFTCreation = () => {
+const Logs = () => {
 
    const [mintLogs, setMintLogs] = useAtom(atomMintLogs)
    const [mintingOver, setMintingOver] = useAtom(atomMintingOver)
@@ -14,6 +14,7 @@ const NFTCreation = () => {
    const phantomURL = 'https://phantom.app/ul/'
 
    SOCKET.on('mintLogs', (data: string) => {
+      setMintingOver(false);
       if (data != 'true') {
          setPic('')
          setMintLogs([...mintLogs, data])
@@ -22,9 +23,9 @@ const NFTCreation = () => {
          setMintingOver(true);
          Vibration.vibrate();
          // setMintLogs([]);
+
       }
    })
-   setMintingOver(true);
 
    return (
       <SafeAreaView className="bg-zinc-900 flex-1">
@@ -49,4 +50,4 @@ const NFTCreation = () => {
    );
 };
 
-export default NFTCreation
+export default Logs

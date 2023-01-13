@@ -9,7 +9,8 @@ import bs58 from "bs58";
 import { atom, useAtom } from "jotai";
 import {
    atomDappKeyPair, atomSharedSecret, atomSession, atomPhantomWalletPublicKey, atomTransacSuccess,
-   atomPic
+   atomPic,
+   atomDisplay
 } from "../services/globals";
 import { atomSOCKET } from "../services/socket";
 import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
@@ -27,6 +28,7 @@ const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
    const [SOCKET] = useAtom(atomSOCKET);
    const [transacSuccess, setTransacSuccess] = useAtom(atomTransacSuccess);
    const [Pic, setPic] = useAtom(atomPic);
+   const [display, setDisplay] = useAtom(atomDisplay);
 
    // handle inbounds links
    useEffect(() => {
@@ -71,7 +73,8 @@ const PhantomEffect = ({ deepLink }: { deepLink: string }) => {
             sharedSecret as any
          );
          console.log('signAndSendTransactionData', signAndSendTransactionData)
-         navigation.navigate("NFTCreation");
+         setDisplay("Logs");
+         navigation.navigate("Notifications");
          setTransacSuccess(true);
       }
       else if (/onDisconnect/.test(url.pathname)) {

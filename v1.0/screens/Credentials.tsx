@@ -5,7 +5,7 @@ import OpenURLButton from '../components/OpenURLButton'
 import { fadeIn } from '../services/globals/functions';
 import { useAtom } from 'jotai'
 import { atomDarkModeOn, atomDarkMode, atomLightMode } from '../services/globals/darkmode'
-import { atomPhantomWalletPublicKey } from '../services/globals/index'
+import { atomPhantomWalletPublicKey, atomRegex } from '../services/globals/index'
 import { PublicKey } from '@solana/web3.js'
 import { checkUsernameAvailability, handleNewUserCreated } from '../services/socket/function'
 import { CheckCircleIcon, XCircleIcon } from 'react-native-heroicons/outline'
@@ -20,7 +20,7 @@ const Credentials = () => {
    const [buttonInactive, setButtonInactive] = useState(true)
    const [username, setUsername] = useState('')
    const [errorText, setErrorText] = useState('')
-   const regex = new RegExp(/(\s*([\0\b\'\"\n\r\t\%\_\\]*\s*(((select\s*.+\s*from\s*.+)|(insert\s*.+\s*into\s*.+)|(update\s*.+\s*set\s*.+)|(delete\s*.+\s*from\s*.+)|(drop\s*.+)|(truncate\s*.+)|(alter\s*.+)|(exec\s*.+)|(\s*(all|any|not|and|between|in|like|or|some|contains|containsall|containskey)\s*.+[\=\>\<=\!\~]+.+)|(let\s+.+[\=]\s*.*)|(begin\s*.*\s*end)|(\s*[\/\*]+\s*.*\s*[\*\/]+)|(\s*(\-\-)\s*.*\s+)|(\s*(contains|containsall|containskey)\s+.*)))(\s*[\;]\s*)*)+)/i)
+   const [regex] = useAtom(atomRegex)
    const phantomURL = 'https://phantom.app/ul/'
    const fadeAnim = useRef(new Animated.Value(0)).current;
    const [usernameAvailable, setUsernameAvailable] = useState(false)

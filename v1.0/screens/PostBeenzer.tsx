@@ -16,7 +16,6 @@ import { socketMint } from '../services/socket/function'
 import { atomSOCKET } from '../services/socket'
 import Properties from '../components/Properties'
 
-
 const PostBeenzer = () => {
 
    const [pic, setPic] = useAtom(atomPic)
@@ -84,7 +83,6 @@ const PostBeenzer = () => {
    }, [transacSuccess])
 
    const createBeenzer = () => {
-      console.log('signAndSendTransaction')
       signAndSendTransaction(session, phantomWalletPublicKey, sharedSecret, dappKeyPair)
    }
 
@@ -112,11 +110,11 @@ const PostBeenzer = () => {
                         onDragEnd={(e) => setPin(e.nativeEvent.coordinate)}
 
                      >
-                        <ImageBackground
+                        {pic && <ImageBackground
                            source={{ uri: pic }}
                            style={{ width: 50, height: 50 }}
                            imageStyle={{ borderRadius: 50 }}
-                        />
+                        />}
                         {/* <Callout> */}
                         {/* <Text>My Callout</Text>
                      <ImageBackground

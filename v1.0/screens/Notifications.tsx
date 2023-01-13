@@ -1,14 +1,15 @@
 import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native'
 import { useState } from 'react'
-import NFTCreation from './NFTCreation'
+import Logs from './Logs'
 import DisplayButton from '../components/DisplayButton'
 import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
+import { useAtom } from 'jotai'
+import { atomDisplay } from '../services/globals'
 
 const Notifications = () => {
 
-   const [display, setDisplay] = useState('Notifications')
+   const [display, setDisplay] = useAtom(atomDisplay)
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
-
 
    return (
       <SafeAreaView className='h-full bg-zinc-900 flex-1'>
@@ -16,7 +17,7 @@ const Notifications = () => {
             <DisplayButton title='Notifications' setDisplay={setDisplay} display={display} />
             <DisplayButton title='Logs' setDisplay={setDisplay} display={display} />
          </View>
-         {display === 'Logs' && <NFTCreation />}
+         {display === 'Logs' && <Logs />}
          {display === 'Notifications' &&
             <View className='flex-1 justify-center items-center'>
                <Text className='text-white text-2xl'>No notifications yet</Text>

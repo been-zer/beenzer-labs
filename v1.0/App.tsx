@@ -9,7 +9,7 @@ import PostBeenzer from './screens/PostBeenzer';
 import { atomDarkModeOn, atomDarkMode, atomLightMode } from './services/globals/darkmode';
 import { useAtom } from 'jotai';
 import Picture from './screens/Picture';
-import NFTCreation from './screens/NFTCreation';
+import Logs from './screens/Logs';
 import Profile from './screens/Profile';
 import Logout from './screens/Logout';
 import EditProfile from './screens/EditProfile';
@@ -75,8 +75,8 @@ export default function App() {
             headerBackButtonMenuEnabled: true,
             animation: 'none',
           }} />
-          <Stack.Screen name="NFTCreation" component={NFTCreation} options={{
-            headerTitle: 'BEENZER in creation',
+          <Stack.Screen name="Logs" component={Logs} options={{
+            headerTitle: 'Logs',
             headerTransparent: true,
             headerBackVisible: false,
             headerTintColor: 'white',

@@ -3,18 +3,18 @@ import { atomUserNFTs } from '../services/globals/'
 import { useAtom } from 'jotai'
 import { INFT } from '../Types'
 
-const EditProfilePic = ({ setModalVisible, setSelectedPicture, modalVisible }: any) => {
+const EditProfilePic = ({ setModalVisible, setSelectedPicture, modalVisible, setButtonInactive, setUnsavedChanges }: any) => {
 
    const [userNFTs, setUserNFTs] = useAtom(atomUserNFTs)
-
-
    const closePictureModal = () => {
       setModalVisible(false);
    }
-
    const selectPicture = (picture: INFT) => {
-      setSelectedPicture(picture);
+      setSelectedPicture(picture._asset);
+      console.log(picture._asset)
+      setButtonInactive(false);
       setModalVisible(false);
+      setUnsavedChanges(true);
    }
 
    return (
@@ -29,23 +29,27 @@ const EditProfilePic = ({ setModalVisible, setSelectedPicture, modalVisible }: a
             <TouchableOpacity onPress={closePictureModal}>
                <Text className='mb-5 text-red-600 font-extrabold text-xl'>Cancel</Text>
             </TouchableOpacity>
-            <FlatList
-               numColumns={3}
-               data={userNFTs}
-               renderItem={({ item }) => (
-                  <View className='items-center'>
-                     <TouchableOpacity onPress={() => selectPicture(item)}>
+            {userNFTs.length > 0 &&
+               <FlatList
+                  numColumns={3}
+                  data={userNFTs}
+                  renderItem={({ item }) => (
+                     <View className='items-center'>
+                        <TouchableOpacity onPress={() => selectPicture(item)}>
 
-                        <Image
-                           source={{ uri: item._asset }}
-                           style={{ marginBottom: 20 }}
-                           className="h-28 w-28 rounded-full m-1"
-                        />
-                     </TouchableOpacity>
-                  </View>
-               )}
-               keyExtractor={item => item.__token__}
-            />
+                           <Image
+                              source={{ uri: item._asset }}
+                              style={{ marginBottom: 20 }}
+                              className="h-28 w-28 rounded-full m-1"
+                           />
+                        </TouchableOpacity>
+                     </View>
+                  )}
+                  keyExtractor={item => item.__token__}
+               />}
+            {userNFTs.length === 0 &&
+               <Text className='text-white text-2xl mt-2 h-full'>No BEENZER yet</Text>
+            }
          </SafeAreaView>
       </Modal>
    )

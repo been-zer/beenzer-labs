@@ -4,14 +4,15 @@ import MapView, { Marker, Callout } from 'react-native-maps'
 import { mapStyle } from '../services/globals'
 import { atomUserLocation, atomUserNFTs } from '../services/globals'
 import { useAtom } from 'jotai'
+import { INFT } from '../Types'
 
-const ProfileMap = () => {
+const ProfileMap = ({ uniqueNFTs }: { uniqueNFTs: INFT | null }) => {
    const [userLocation, setUserLocation] = useAtom(atomUserLocation);
    const [userNFTs, setUserNFTs] = useAtom(atomUserNFTs);
 
    return (
-      <>
-         {userLocation.coords ? (
+      <View className='items-center'>
+         {!uniqueNFTs && userLocation.coords ? (
             <MapView
                customMapStyle={mapStyle}
                style={styles.map}
@@ -38,12 +39,40 @@ const ProfileMap = () => {
                      </Marker>
                   })}
                </>
-            </MapView>) : (<ActivityIndicator className="mt-5" size="large" color="green" />
+            </MapView>) : (!uniqueNFTs && <ActivityIndicator className="mt-5" size="large" color="green" />
          )
          }
-      </>
+         {uniqueNFTs && userLocation.coords ? (
+            <MapView
+               customMapStyle={mapStyle}
+               style={styles.map}
+               showsUserLocation={true}
+               provider="google"
+               initialRegion={{
+                  latitude: uniqueNFTs._latitude as number,
+                  longitude: uniqueNFTs._longitude as number,
+                  latitudeDelta: 0.05,
+                  longitudeDelta: 0.05,
+
+               }}>
+               <>
+                  <Marker coordinate={{ latitude: uniqueNFTs._latitude, longitude: uniqueNFTs._longitude }} pinColor="green"
+                     title={uniqueNFTs._description}
+                  >
+                     <ImageBackground
+                        className='w-10 h-10'
+                        imageStyle={{ borderRadius: 50 }}
+                        source={{ uri: uniqueNFTs._asset }}
+                     />
+                  </Marker>
+               </>
+            </MapView>) : (uniqueNFTs && <ActivityIndicator className="mt-5" size="large" color="green" />
+         )
+         }
+      </View>
    )
 }
+
 
 export default ProfileMap
 

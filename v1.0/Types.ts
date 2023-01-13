@@ -79,9 +79,12 @@ export interface IUpdateUser {
    _username_?: string,
    _description?: string,
    _name?: string,
+   _lastname?: string,
    _email?: string,
    _birthdate?: string,
    _phone?: string,
    _city?: string,
    _country?: string,
+   _pfp?: string,
 }
+

@@ -67,6 +67,7 @@ const Home = () => {
          console.error(e);
       }
    }
+
    const getInfoNft = async () => {
       try {
          const profileNFTs = await socketUserNFTs(SOCKET);
@@ -75,11 +76,6 @@ const Home = () => {
          console.error(e);
       }
    }
-
-   useEffect(() => {
-      console.log('profile', profile)
-      console.log('NFT', userNFTs)
-   }, [profile, userNFTs])
 
    return (
       <SafeAreaView className='h-full bg-zinc-900 flex-1 ' style={StyleSheet.absoluteFillObject}>
