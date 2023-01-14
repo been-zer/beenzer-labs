@@ -1,12 +1,16 @@
-import { Camera, CameraCapturedPicture, CameraType } from 'expo-camera';
+import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 import * as ScreenOrientation from 'expo';
 import { useState, useRef } from 'react';
-import { Button, Dimensions, Text, TouchableOpacity, View, ImageBackground, Image, ScrollView } from 'react-native';
+import { Button, Dimensions, Text, TouchableOpacity, View, ImageBackground, Image, ScrollView, SafeAreaView } from 'react-native';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { atomPic, atomDataPic, atomKeepPic } from '../services/globals';
 import { useAtom } from 'jotai';
 import PostBeenzer from './PostBeenzer';
 import { useNavigation, NavigationProp, ParamListBase } from '@react-navigation/native';
+import { } from 'react-native-paper'
+import { BoltIcon, BoltSlashIcon, ArrowPathRoundedSquareIcon } from "react-native-heroicons/solid";
+import { atomDarkModeOn, atomDarkMode, atomLightMode } from '../services/globals/darkmode';
+
 
 export default function Picture() {
    const [type, setType] = useState(CameraType.back);
@@ -18,6 +22,10 @@ export default function Picture() {
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
    const [clicked, setClicked] = useState<boolean>(true);
    const [dataPic, setDatapic] = useAtom(atomDataPic)
+   const [flash, setFlash] = useState<FlashMode>(FlashMode.off);
+   const [darkModeOn, setDarkModeOn] = useAtom(atomDarkModeOn);
+   const [darkMode, setDarkMode] = useAtom(atomDarkMode);
+   const [lightMode, setLightMode] = useAtom(atomLightMode);
 
    if (!permission) {
       // Camera permissions are still loading
@@ -27,7 +35,7 @@ export default function Picture() {
    if (!permission.granted) {
       // Camera permissions are not granted yet
       return (
-         <View className='flex-1 justify-center bg-zinc-900'>
+         <View className={`flex-1 justify-center ${darkModeOn ? `bg-${darkMode}` : `bg-${lightMode}`}`}>
             <Text style={{ textAlign: 'center', color: 'white' }}>We need your permission to show the camera</Text>
             <Button onPress={requestPermission} title="grant permission" />
          </View >
@@ -73,10 +81,9 @@ export default function Picture() {
       <>
          <View className='flex-1'>
             {pic ?
-
                (
                   <>
-                     <View className='flex-1 justify-center items-center bg-zinc-900' >
+                     <SafeAreaView className={`flex-1 justify-center items-center ${darkModeOn ? `bg-${darkMode}` : `bg-${lightMode}`}`}>
                         <ImageBackground
                            source={{ uri: pic }}
                            resizeMode="contain"
@@ -86,35 +93,47 @@ export default function Picture() {
                               width: '100%',
                            }}>
                         </ImageBackground>
-                        <TouchableOpacity className="mt-1 w-52 bg-green-600  p-4 rounded-2xl" onPress={handleSave} >
-                           <Text className="font-semibold text-white text-center" > continue </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity className="mb-10 mt-1 w-52 bg-red-600  p-4 rounded-2xl" onPress={() => (
-                           setPic(""), setClicked(true)
-                        )} >
-                           <Text className="font-semibold text-white text-center" > Do another one </Text>
-                        </TouchableOpacity>
-                     </View>
+                        <View className='flex-row mt-2'>
+                           <TouchableOpacity className="mr-1 w-1/4 border border-red-600  p-4 rounded-2xl" onPress={() => (
+                              setPic(""), setClicked(true)
+                           )} >
+                              <Text className="font-semibold text-red-600 text-center" >Cancel</Text>
+                           </TouchableOpacity>
+                           <TouchableOpacity className="ml-1 w-1/4 border border-green-600  p-4 rounded-2xl" onPress={handleSave} >
+                              <Text className="font-semibold text-green-500 text-center" >Keep</Text>
+                           </TouchableOpacity>
+
+                        </View>
+                     </SafeAreaView>
                   </>
                ) :
 
                (
-                  <Camera className='flex-1' type={type} ref={cameraRef} onCameraReady={cameraReady}>
-                     <View className="flex-1 flex-row content-center border-2 border-indigo-50">
-                        < View className='flex-1 flex-col justify-end items-center pb-5'>
-                           <TouchableOpacity className=" " onPress={toggleCameraType}>
-                              <Text className='font-bold text-l text-white mb-3 '>
-                                 {type === "back" ? "Show your face 🔄" : "You're beautiful"}
-                              </Text>
-                           </TouchableOpacity>
-                           <TouchableOpacity className="w-52 bg-green-600 p-4 rounded-2xl" disabled={!clicked} onPress={() => takePicture()}>
-                              <Text className="font-semibold text-center"> BeenZer 📷 </Text>
+                  <Camera
+                     className='flex-1'
+                     flashMode={flash}
+                     type={type} ref={cameraRef} onCameraReady={cameraReady}>
+                     <View className="flex-1 flex-row content-center">
+                        < View className='flex-1 flex-col justify-end pb-5'>
+                           <View className='flex-row justify-evenly'>
+                              <TouchableOpacity
+                                 className='brounded-2xl '
+                                 onPress={() => setFlash(flash === FlashMode.off ? FlashMode.on : flash === FlashMode.on ? FlashMode.auto : FlashMode.off)}>
+                                 <Text className='text-white text-xl '>{flash === FlashMode.on ? <BoltIcon color='green' size={65} /> : flash === FlashMode.off ? <BoltSlashIcon color='green' size={65} /> : flash === FlashMode.auto ? 'auto' : ''}</Text>
+                              </TouchableOpacity >
+                              <TouchableOpacity className=" rounded-2xl  w-1/4" onPress={toggleCameraType}>
+                                 <ArrowPathRoundedSquareIcon size={65} color="green" />
+                              </TouchableOpacity>
+                           </View>
+                           <TouchableOpacity className=" mb-5 w-3/4 self-center border border-green-500 p-4 rounded-2xl" disabled={!clicked} onPress={() => takePicture()}>
+                              <Text className="font-semibold text-center text-2xl text-white "> Beenzer 📷 </Text>
                            </TouchableOpacity>
                         </View>
                      </View>
                   </Camera >
-               )}
-         </View>
+               )
+            }
+         </View >
       </>
    );
 }

@@ -34,6 +34,7 @@ const EditInfos = ({
          text = text.replace(regex, '');
       }
       if (userInfo === 'Username') {
+         text = text.toLowerCase();
          if (text === profile[0]._username_) {
             setErrorText("");
             setNewData((prev) => ({ ...prev, [sockName]: text }));
@@ -41,8 +42,6 @@ const EditInfos = ({
          }
          else if (text.includes(' ')) {
             setErrorText("No spaces allowed 🥲");
-            setButtonInactive(true);
-            setUsernameAvailable(false);
          } else if (text.length < 3) {
             setErrorText("Minimum 3 letters please 🥲");
             setButtonInactive(true);

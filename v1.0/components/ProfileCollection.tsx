@@ -29,33 +29,35 @@ const ProfileCollection = ({ setShowDetails, showDetails }: { showDetails: boole
    return (
       <>
          {!showDetails && userNFTs.length > 0 &&
-            <FlatList
-               className='mt-2 '
-               data={userNFTsReverse}
-               numColumns={2}
-               renderItem={({ item }) => {
-                  const borderColor = item._creator === profile[0].__pubkey__ ? 'black' : 'green';
-                  return (
-                     <>
-                        <TouchableOpacity onPress={() => handleShowDetails(item)} onLongPress={() => newProfilPic(item._asset)}>
-                           <View className="flex flex-col items-center">
-                              <Text className='text-white font-bold'>BEENZER #{item._id_}</Text>
-                              {item._asset ?
-                                 <Image
-                                    source={{ uri: item._asset }}
-                                    style={{ width: 150, height: 150, marginRight: 10, marginLeft: 10, borderWidth: 1, borderColor, borderRadius: 10 }}
-                                 /> : <ActivityIndicator
-                                    className="self-center m-10"
-                                    size="large"
-                                    color="green"
-                                 />}
-                           </View>
-                        </TouchableOpacity>
-                     </>
-                  );
-               }}
-               keyExtractor={(item) => item.__token__}
-            />
+            <View className="flex flex-col items-center">
+               <FlatList
+                  className='mt-2'
+                  data={userNFTsReverse}
+                  numColumns={2}
+                  renderItem={({ item }) => {
+                     const borderColor = item._creator === profile[0].__pubkey__ ? 'black' : 'green';
+                     return (
+                        <>
+                           <TouchableOpacity onPress={() => handleShowDetails(item)} onLongPress={() => newProfilPic(item._asset)}>
+                              <View className="flex flex-col items-center">
+                                 <Text className='text-white font-bold'>BEENZER #{item._id_}</Text>
+                                 {item._asset ?
+                                    <Image
+                                       source={{ uri: item._asset }}
+                                       style={{ width: 150, height: 150, marginRight: 10, marginLeft: 10, borderWidth: 1, borderColor, borderRadius: 10 }}
+                                    /> : <ActivityIndicator
+                                       className="self-center m-10"
+                                       size="large"
+                                       color="green"
+                                    />}
+                              </View>
+                           </TouchableOpacity>
+                        </>
+                     );
+                  }}
+                  keyExtractor={(item) => item.__token__}
+               />
+            </View>
          }
          {userNFTs.length == 0 &&
             <Text className='text-white text-2xl mt-2'>No BEENZER yet</Text>}

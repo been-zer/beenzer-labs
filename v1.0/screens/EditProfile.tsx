@@ -54,7 +54,7 @@ const EditProfile = () => {
             <View className='items-center'>
                <TouchableOpacity onPress={openPictureModal} >
                   <Image className=" h-28 w-28 rounded-full"
-                     source={profile[0]._pfp ? { uri: profile[0]._pfp } : require("../assets/newUser.png")}
+                     source={profile[0]._pfp ? { uri: profile[0]._pfp } : selectedPicture ? selectedPicture : require("../assets/newUser.png")}
                   />
                   <Text className='text-white mt-1'>Edit profile picture</Text>
                </TouchableOpacity>

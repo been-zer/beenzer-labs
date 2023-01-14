@@ -15,6 +15,7 @@ import { signAndSendTransaction } from '../services/phantom/sign'
 import { socketMint } from '../services/socket/function'
 import { atomSOCKET } from '../services/socket'
 import Properties from '../components/Properties'
+import { atomDarkModeOn, atomDarkMode, atomLightMode } from '../services/globals/darkmode'
 
 const PostBeenzer = () => {
 
@@ -33,6 +34,9 @@ const PostBeenzer = () => {
    const [transacSuccess, setTransacSuccess] = useAtom(atomTransacSuccess)
    const [dataPic, setDataPic] = useAtom(atomDataPic)
    const [SOCKET] = useAtom(atomSOCKET)
+   const [darkModeOn, setDarkModeOn] = useAtom(atomDarkModeOn)
+   const [darkMode, setDarkMode] = useAtom(atomDarkMode)
+   const [lightMode, setLightMode] = useAtom(atomLightMode)
 
    const scrollToBottom = () => {
       if (scrollViewRef.current) {
@@ -43,8 +47,11 @@ const PostBeenzer = () => {
    useLayoutEffect(() => {
       navigation.setOptions({
          headerTitle: 'Drop Beenzer',
-         headerTitleStyle: { color: 'white' },
+         headerTitleStyle: {
+            color: `${darkModeOn ? `${lightMode}` : "black"}`,
+         },
          headerTransparent: true,
+         headerTintColor: `${darkModeOn ? `${lightMode}` : "black"}`,
 
       })
    }, [navigation])
@@ -88,7 +95,7 @@ const PostBeenzer = () => {
 
    return (
       <>
-         <SafeAreaView className="bg-zinc-800" style={StyleSheet.absoluteFillObject} >
+         <SafeAreaView className={`${darkModeOn ? `bg-${darkMode}` : `bg-${lightMode}`}`} style={StyleSheet.absoluteFillObject} >
             {
                userLocation.coords &&
                <ScrollView className="flex-1 ml-5 mr-5" ref={scrollViewRef} showsVerticalScrollIndicator={false}>
@@ -129,13 +136,14 @@ const PostBeenzer = () => {
                   </View>
                   <View className="w-full items-center">
                      <TextInput
+                        className={`${darkModeOn ? `text-${lightMode}` : `text-black`}`}
                         onFocus={scrollToBottom}
                         style={styles.input}
                         blurOnSubmit={true}
                         multiline={true}
                         placeholder="Insert a description.."
                         onChangeText={(newText: string) => setDescription(newText)}
-                        placeholderTextColor={"white"}
+                        placeholderTextColor={darkModeOn ? `${lightMode}` : "black"}
                      />
                   </View>
                   <View className="w-full items-center mt3">
@@ -184,7 +192,6 @@ const styles = StyleSheet.create({
       padding: 10,
       marginBottom: 5,
       marginTop: 5,
-      color: 'white',
       height: 100,
    },
 });

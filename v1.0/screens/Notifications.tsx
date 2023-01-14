@@ -5,14 +5,18 @@ import DisplayButton from '../components/DisplayButton'
 import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import { useAtom } from 'jotai'
 import { atomDisplay } from '../services/globals'
+import { atomDarkMode, atomDarkModeOn, atomLightMode } from '../services/globals/darkmode';
 
 const Notifications = () => {
 
    const [display, setDisplay] = useAtom(atomDisplay)
    const navigation = useNavigation<NavigationProp<ParamListBase>>();
+   const [darkMode, setDarkMode] = useAtom(atomDarkMode);
+   const [lightMode, setLightMode] = useAtom(atomLightMode);
+   const [darkModeOn, setDarkModeOn] = useAtom(atomDarkModeOn);
 
    return (
-      <SafeAreaView className='h-full bg-zinc-900 flex-1'>
+      <SafeAreaView className={`${darkModeOn ? `bg-${darkMode}` : `bg-${lightMode}`} h-full flex-1`}>
          <View className='flex-row justify-around'>
             <DisplayButton title='Notifications' setDisplay={setDisplay} display={display} />
             <DisplayButton title='Logs' setDisplay={setDisplay} display={display} />
@@ -20,7 +24,7 @@ const Notifications = () => {
          {display === 'Logs' && <Logs />}
          {display === 'Notifications' &&
             <View className='flex-1 justify-center items-center'>
-               <Text className='text-white text-2xl'>No notifications yet</Text>
+               <Text className={`${darkModeOn ? `text-${lightMode}` : 'text-black'} text-2xl`}>No notifications yet</Text>
             </View>}
          <View className=' justify-center items-center'>
             <TouchableOpacity

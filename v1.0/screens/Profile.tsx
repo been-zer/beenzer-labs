@@ -6,7 +6,7 @@ import {
 import { mapStyle } from '../services/globals'
 import { ArrowRightOnRectangleIcon, PencilSquareIcon } from "react-native-heroicons/solid"
 import { useAtom } from 'jotai'
-import { atomProfile, atomUserNFTs, atomActiveScreen } from '../services/globals'
+import { atomProfile, atomUserNFTs, atomActiveScreen, atomRefreshing } from '../services/globals'
 import GradientText from "../components/GradientText"
 import MapView from 'react-native-maps'
 import ProfileTab from '../components/ProfileTab'
@@ -29,7 +29,7 @@ const Profile = () => {
    const isFocused = useIsFocused();
    const [SOCKET] = useAtom(atomSOCKET);
    const [userNFTs, setUserNFTs] = useAtom(atomUserNFTs);
-   const [refreshing, setRefreshing] = useState(false);
+   const [refreshing, setRefreshing] = useAtom(atomRefreshing);
 
    useEffect(() => {
       if (isFocused) {

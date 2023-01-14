@@ -1,6 +1,6 @@
 import { PublicKey } from '@solana/web3.js'
 import { Socket } from "socket.io-client";
-import { INFT, IProfile, IUser } from "../../Types";
+import { INFT, IProfile } from "../../Types";
 
 export const socketMint = (
    Socket: Socket,
@@ -77,10 +77,10 @@ export const updateUserProfile = (Socket: Socket, pubkey: PublicKey | string, up
    Socket.emit('updateUser', pubkey, update, value)
 }
 
-export const socketFriends = (Socket: Socket, searchQuery: string) => {
+export const socketSeachFriends = (Socket: Socket, searchQuery: string) => {
    Socket.emit("searchUsers", searchQuery);
-   return new Promise<IUser[]>((resolve) => {
-      Socket.on("searchUsersRes", (users: IUser[]) => {
+   return new Promise<IProfile[]>((resolve) => {
+      Socket.on("searchUsersRes", (users: IProfile[]) => {
          resolve(users);
       });
    });
@@ -88,14 +88,51 @@ export const socketFriends = (Socket: Socket, searchQuery: string) => {
 
 export const socketAddFriend = (Socket: Socket, pubkey: string, pubkey2: string) => {
    Socket.emit('addFriend', pubkey, pubkey2);
-   console.log('addFriend', pubkey, pubkey2)
    return new Promise<boolean>((resolve) => {
-      console.log('addFriendRes')
       Socket.on("addFriendRes", (res: boolean) => {
          resolve(res);
       });
    });
 }
+
+export const socketDelFriend = (Socket: Socket, pubkey: string, pubkey2: string) => {
+   Socket.emit('deleteFriend', pubkey, pubkey2);
+   return new Promise<boolean>((resolve) => {
+      Socket.on("deleteFriendRes", (res: boolean) => {
+         resolve(res);
+      });
+   });
+}
+
+export const socketGetFriends = (Socket: Socket, pubkey: string) => {
+   Socket.emit('getUserFriends', pubkey);
+   return new Promise<IProfile[]>((resolve) => {
+      Socket.on("userFriends", (friends: IProfile[]) => {
+         resolve(friends);
+      });
+   });
+}
+
+export const socketGetFollowing = (Socket: Socket, pubkey: string) => {
+   Socket.emit('getUserFollows', pubkey);
+   return new Promise<IProfile[]>((resolve) => {
+      Socket.on("getUserFollowsRes", (follows: IProfile[]) => {
+         resolve(follows);
+      });
+   });
+}
+
+export const socketGetFollower = (Socket: Socket, pubkey: string) => {
+   Socket.emit('getUserFollowers', pubkey);
+   return new Promise<IProfile[]>((resolve) => {
+      Socket.on("getUserFollowersRes", (followers: IProfile[]) => {
+         resolve(followers);
+      });
+   });
+}
+
+
+
 
 
 // export const socketUserNFTs = async () => {

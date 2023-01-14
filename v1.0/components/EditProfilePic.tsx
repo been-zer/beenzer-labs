@@ -11,7 +11,6 @@ const EditProfilePic = ({ setModalVisible, setSelectedPicture, modalVisible, set
    }
    const selectPicture = (picture: INFT) => {
       setSelectedPicture(picture._asset);
-      console.log(picture._asset)
       setButtonInactive(false);
       setModalVisible(false);
       setUnsavedChanges(true);
@@ -25,7 +24,7 @@ const EditProfilePic = ({ setModalVisible, setSelectedPicture, modalVisible, set
          visible={modalVisible}
          onRequestClose={closePictureModal}
       >
-         <SafeAreaView className='bg-zinc-900 items-center'>
+         <SafeAreaView className='bg-zinc-900 items-center flex-1'>
             <TouchableOpacity onPress={closePictureModal}>
                <Text className='mb-5 text-red-600 font-extrabold text-xl'>Cancel</Text>
             </TouchableOpacity>
