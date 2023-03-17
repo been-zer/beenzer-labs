@@ -1,1 +1,1 @@
-# beenzer-app
+# beenzer-labs
